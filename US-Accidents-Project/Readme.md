@@ -8,6 +8,34 @@
 
 # US Accidents (2016-2023) Project 
 
+## Project Organization
+```
+├── Notes Of Project.md                                        : Notes Taken During EDA
+├── Readme.md                                                  : Report
+├── images                                                     : Contains Images from EDA n Model Training
+│   ├── Accidents_Organized_by_Severity_Level_per_Year.png     
+│   ├── Accidents_Per_Source_Level.png                         
+│   ├── All_Models_Accuracy_Score_Plot_on_Val_Set.png
+│   ├── All_Models_Conf_Matrix_Plot.png
+│   ├── All_Models_F1_Score_Plot_on_Val_Set.png
+│   ├── All_Models_PR_Curve_plot.png
+│   ├── All_Models_ROC_Curve_plot.png
+│   ├── Balanced_Severity.png
+│   ├── Best_Model_Comparision_PR_Curve_plot.png
+│   ├── Best_Model_Comparision_ROC_Curve_plot.png
+│   ├── Best_Models_Conf_Matrix_Plot.png
+│   ├── Frequent_Words_PerSeverityLevel.png
+│   ├── Num_Accidents_Per_Severity_Level.png
+│   ├── Target_Encoding.png
+│   ├── Top_15_Cities_Accidents.png
+│   ├── Top_15_States_Accidents.png
+│   ├── UnBalanced_Severity.png
+│   ├── Weather_Accident_Distribution.png
+│   └── Weekday_Accident_Distribution.png
+├── project-4-us-accidents-data-processing.ipynb               : EDA & Data Processing NB
+└── project-4-us-accidents-model-runs.ipynb                    : Model Training NB
+```
+
 ## Motivation and Brief of the Project
 This project includes performing EDA, Data Cleaning and training Logistic Regression Models on the March 2023 Update of US-Accidents Dataset, which consists of more than *7.7 million accident instances*
 
@@ -30,10 +58,10 @@ The project can be divided into following major tasks from 2 Kaggle Notebooks
 
 ## Insights from the EDA n Model Training
 - Here I am simply mapping few insights from the EDA & Model Training, detailed work can be found inside the following jupyter notebooks.
-    - [US Accidents Dataset EDA]("./project-4-us-accidents-data-processing.ipynb")
+    - [US Accidents Dataset EDA](./project-4-us-accidents-data-processing.ipynb)
         - This notebook comprises of EDA and Saving of **Processed Data consisting of around 2L Instances, with  balanced Severity Class Distribution**
     
-    - [ML Model Training on Dataset]("./project-4-us-accidents-model-runs.ipynb")
+    - [ML Model Training on Dataset](./project-4-us-accidents-model-runs.ipynb)
         - Notebook which comprises of Model Training Code on Processed Data
         - For comparision and faster training of models, I used a subset of processed data. **Another reason to use subset of Data is few models take too much time *(Kaggle Compute Exausts in this time halting the whole process)* to find best params, so having a subset of data is a quick way to find best models n best params for them.**
         - After finding best params n models, the best models are **trained on whole of processed train data (~2L instances)**, and *validated via the test data (~50K instances)*
