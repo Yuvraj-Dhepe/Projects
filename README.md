@@ -6,7 +6,7 @@ This portfolio is a compilation of all Data Related Projects I have done for sel
 
 ## Machine Learning Projects
 
-<img align = "left" width = "240" height = "180" src = "./Images/Rooftop_Project.jpg"></img> **[Rooftop Classification Image Segmentation Project](https://github.com/Yuvraj-Dhepe/Projects/tree/main/Dida_Task)**
+<img align = "left" width = "240" height = "180" src = "./Images/Rooftop_Project.jpg"></img> **[Rooftop Classification Image Segmentation Project](https://github.com/Yuvraj-Dhepe/Projects/tree/main/Rooftop_Classification_Project)**
 
 The objective of this project was to come up with a solution for Rooftop Segmentation Problem, with limited dataset of 30 images and 30 labels. In this project I worked on 4 image segmentation models, 2 of which were trained from scratch (CNN, UNET) and rest 2 utilized the potential of Transfer Learning (Vgg16+Unet, MobileNetV2+Unet). The results were quite good 💫 given the less data constraints of this project.
 
