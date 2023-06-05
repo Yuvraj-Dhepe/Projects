@@ -1,12 +1,10 @@
 ![Python version](https://img.shields.io/badge/Python%20version-3.10.10-light)
-![Type of ML](https://img.shields.io/badge/Class-Multi--Class--Classification-orange)
-![Type of ML](https://img.shields.io/badge/Type%20of%20ML-Logistic%20Regression-red)
+![Type of ML](https://img.shields.io/badge/Type%20of%20ML-Image%20Segmentation-blueviolet)
 ![License](https://img.shields.io/badge/License-Public-green)
 ![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)
-![gradio-ui](https://img.shields.io/badge/UI-Gradio--UI-brightgreen)
 ![Open Source Love svg1](https://img.shields.io/badge/%E2%9D%A4%EF%B8%8F-Open%20Source-pink)
 
-# Rooftop Classification Computer Vision Project
+# [Rooftop Classification Computer Vision Project](#t1.)
 
 ## Project Organization
 ```
@@ -14,114 +12,57 @@
 ├── Readme.md                                                  : Report
 ├── Dataset/                                                   : Contains Images used for Model Training
 ├── images/                                                    : Contains Model Comparision Metric Viz's
-└── Rooftop_Classification.ipynb                               : EDA & Data Processing NB
+└── Rooftop_Classification.ipynb                               : Data Processing & Model Training NB
 ```
 
 ## Motivation and Brief of the Project
 This project is a comprehensive work of Rooftop Classification, with limited number of images. This task made use of *only 25 train and 5 test rooftop images with their binary pixeled label variants*. For coming up with a robust ML solution, I tried 4 different image segmentation approaches by making use of 2 models which were **trained from scratch (CNN, UNET)** and 2 models that used **Transfer learning (Vgg16+Unet, MobilenetV2+Unet)**
 
-The project can be divided into following major tasks from 2 Kaggle Notebooks
-- [Data Processing & EDA](https://www.kaggle.com/code/yuvrajdhepe/project-4-us-accidents-data-eda)
-    - a) Data Cleaning 
-    - b) EDA 
-    - c) Data Cleaning & Transformation
-    - d) Balancing the Severity Class Distribution, for unbiased Model training
-        
-- [Model Training](https://www.kaggle.com/code/yuvrajdhepe/project-4-model-training-on-us-accidents-dataset)
-    - a) Data Splitting
-    - b) Logistic Regressor Model Training
-    
+The project can be divided into 5 major sections (**Details for Every Section are Mentioned in the Ipynb Notebook**):
+    - Image Preprocessing & Image Augmentation
+    - Splitting of Data for Training, Validation & Testing
+    - Model Training & Evaluation of Models on Validation Set
+    - Best Models Selection & Re-Training Best Models on Whole Train Data 
+    - Evaluation of Models on Test Set Images
+
 ## Star Analysis
-- Situation: To gain experience in handling, cleaning and working on huge dataset 
-- Task: Performing EDA and cleaning of Data to train models on the dataset to find the best predictive model
-- Action: Develop idea on the task lines, by exploring data, transforming data to a suitable level for model training
-- Result: Gain Hands-on experience in Machine Learning processing huge datasets and building efficient models on the same
+- Situation: To work on a Computer Vision Project with Limited Amount of Data
+- Task: To get the best out of the the dataset at hand to find best segmentation model
+- Action: Develop a robust model that can perform well on this segmentation task
+- Result: Gain Hands-on experience to make most of limited dataset, learn segmentation concepts and apply them on a real world problem
 
-## Insights from the EDA n Model Training
-- Here I am simply mapping few insights from the EDA & Model Training, detailed work can be found inside the following jupyter notebooks.
-    - [US Accidents Dataset EDA](./project-4-us-accidents-data-processing.ipynb)
-        - This notebook comprises of EDA and Saving of **Processed Data consisting of around 2L Instances, with  balanced Severity Class Distribution**
+## Insights from the Data Processing & Model Training
+- Few Insights from Data Processing:
+    - Images were required to be of **proper dimensions** for neural architecture conv and pooling layers to train on the segmentation task
+    - **Image augmentation** improved the performance of models but were **over-fitting a bit on validation data**
+    - Binarizing the labels with a threshold and **finding best threshold via ROC Curve** **improved model predictions**
     
-    - [ML Model Training on Dataset](./project-4-us-accidents-model-runs.ipynb)
-        - Notebook which comprises of Model Training Code on Processed Data
-        - For comparision and faster training of models, I used a subset of processed data. **Another reason to use subset of Data is few models take too much time *(Kaggle Compute Exausts in this time halting the whole process)* to find best params, so having a subset of data is a quick way to find best models n best params for them.**
-        - After finding best params n models, the best models are **trained on whole of processed train data (~2L instances)**, and *validated via the test data (~50K instances)*
+- Few Insights from Model Training:
+(**aug** refers to models trained on augmented data)    
+
+    - **Simple models** like UNET, CNN trained from Scratch had a pretty good recall on Validation set
+    ![Recall_Plot](./images/re_val.png)
+    - **Complex pre-trained** models like VGG & MobileNet combined with Unet gave good precision on Validation set
+    ![Precision_Plot](./images/pr_val.png)
+    - In reality assuming that we don't want to miss presence of rooftops, having FN"s should be penalized highly, so FN should be as low as possible, thus recall has to be the high, however to remain on safe side, I chose to go with **F1-score for selecting best models**.
+    ![F1Score_Plot](./images/f1_val.png)
     
-### Essential Plots from EDA & Key Findings From the Plots
-- California is the state with highest number of accidents, followed by Florida & Texas
-![Major Accident States](./images/Top_15_States_Accidents.png)
+- Following are 2 of the Best Models Prediction of Rooftops *on Test Set* after training on whole of **train set** or **augmented train set**
+(**bst** refers to models trained on augmented data)
+(**bs** refers to models trained on non-augmented data)
+![aug_vgg_unet](./images/bst_vgg_unet.png)
+![vgg_unet](./images/bs_vgg_unet_best_models_Plot.png)
 
-- As of 2023, Miami records highest number of accidents followed by Houston, Los Angeles & Charlotte
-![Major Accident Cities](./images/Top_15_Cities_Accidents.png)
 
-- Many accidents take place place on Friday, Thursday & Wednesday
-![Weekday_Accident_Distribution](./images/Weekday_Accident_Distribution.png)
+## Conclusions 
+- After the training with all the given images, a slight imporvement can be spotted in terms of finding a roof, like the roof parts which were not covered fully previously are covered more efficiently
+- Also the  models overfitted a bit to this training data, cause we can see red spots to the points where ther are no roofs
+- However I believe given small amount of data, this is the best I was able to make of problem statement and NN's, Any Feedbacks are Welcomed
 
-- Around 2.7 million accidents happen in Fair Weather
-![Weather_Accident_Distribution](./images/Weather_Accident_Distribution.png)
+## What Can be improved
+- First of all increase in the training samples surely will increase the model's performance
+- Different image augmentation can also be tried to improve the same NN's performance
+- Trying other image segmentation Neural Networks can improve the segmentation of rooftops
 
-- More than 6 million accidents are of Severity Level 2
-![Severity Distribution in Accidents](./images/Num_Accidents_Per_Severity_Level.png)
-
-- Number of Accidents have increased over the years, though severity level have decreased
-![Annual Accidents Distribution per Severity Level](./images/Accidents_Organized_by_Severity_Level_per_Year.png)
-
-- Major words used to Describe the Severity of Accidents
-![Frequent_Words_PerSeverityLevel](./images/Frequent_Words_PerSeverityLevel.png)
-
-### Insights From Model Training & Testing
-- Top 2 Models (With Hyper Parameter Tuning)
-
-| Model                     | Avg f1 score|
-|---------------------------|-------------|
-| Random Forest  Classifier | 81.80%      |
-| XGBoost Clasifier         | 81.16%      |
-
-- **The final model used for this project is thus Random Forest Classifier, to make predictions on real-data, apart from having a good f1 score this model also has a better ROC Curve and PR Curve in comparision with XGBoost Classifier**
-
-- ROC Curve for Test Data via Best Models Trained On All of Processed Train Data
-![ROC_Best_Models](./images/Best_Model_Comparision_ROC_Curve_plot.png)
-
-- PR Curve for Test Data via Best Models Trained On All of Processed Train Data
-![PR_Best_Models](./images/Best_Model_Comparision_PR_Curve_plot.png)
-
-- Conf Matrix for Test Data via Best Models Trained On All of Processed Train Data
-![Conf_Mat_Best_Models](./images/Best_Models_Conf_Matrix_Plot.png)
-
-**Metrics Used: F1**
-
-**Why choose F1 as metrics?**
-F1 is a commonly used metric for Logistic Regression evaluation purposes, and complements ROC n PR Curve visualizations by providing a concise and interpretable metric that captures the balance between precision and recall for multi-class classification tasks.
-
-**Following Plots were used to Compare Models n Find Best One**
-- ROC Curves for All Models  trained on Sample Subset of Processed Data
-![ROC_ALL_Models](./images/All_Models_ROC_Curve_plot.png)
-
-- PR Curves for All Models trained on Sample Subset of Processed Data
-![PR_ALL_Models](./images/All_Models_PR_Curve_plot.png)
-
-- Accuracy Metric Comparision for All Models trained on Sample Subset of Processed Data
-![Accuracy_ALL_Models](./images/All_Models_Accuracy_Score_Plot_on_Val_Set.png)
-
-- F1-Score Metric Comparision for All Models trained on Sample Subset of Processed Data
-![F1_ALL_Models](./images/All_Models_F1_Score_Plot_on_Val_Set.png)
-
-- Conf Matrices for All Models
-![Conf_Mat_ALL_Models](./images/All_Models_Conf_Matrix_Plot.png)
-
-## Conclusions
-- Random Forest classifier performs the best on **US-Accidents Severity Level Predictions on basis of ROC, PR Curve, Accuracy and F1-Scores**
-- Overall every model performs well on Severity Levels 1,3,4 on Validation sets, however the accuracy and recall decreases on Severity Level 2
-    - The reasons for this can mainly be while balancing the data the sample that we chose for 2 Severity is not a good representative 
-    - This is where one can retrain the models by choosing various random samples, or try including more data of Level 2 Severity and then retrain the models
-
-## What can be improved
-- Every model can be trained using cuml GPU implementations on whole dataset, and then do more dense comparisions between models to select the best one
-
-- Trying different subsets of Severity level 2, for balancing the Severity class distribution so our models learn a robust representation for Severity level 2. 
-    - This can be achieved by training model on these subsets in parallel and comparing the scores on a fixed validation or test set
-
-- Trying different features from subset which seem similar for ex. in the subset of (zipcode, city, county,  state) I chose to go with city, but one can check model performance with County for ex.
-- Trying combination of features which are very less correlated to the Target variable, but might give better correlation when grouped
-
-- One can build a Web-App with simple UI for prediction of Severity of Accidents given feature value ip's
+    
+    
