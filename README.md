@@ -6,14 +6,14 @@ This portfolio is a compilation of all Data Related Projects I have done for sel
 
 ## Machine Learning Projects
 
+<img align = "left" width = "240" height = "180" src = "./Images/Us_Accidents_Project.png"> **[US Accidents (2016-2023) Severity Prediction Project](https://github.com/Yuvraj-Dhepe/Projects/tree/main/US-Accidents-Project)**
+
+In this ML project I utilized the updated US Accidents dataset(2016-2023) consisting with more than 7 million accident records. The work included perform EDA on the dataset, cleaning the data, to make it suitable for classification, training and comparing various logistic regression algorithms like XGB, Random Forests, Naive Bayes, Logistic Regressor etc.
+
+---
 <img align = "left" width = "240" height = "180" src = "./Images/Rooftop_Project.jpg"></img> **[Rooftop Classification Image Segmentation Project](https://github.com/Yuvraj-Dhepe/Projects/tree/main/Rooftop_Classification_Project)**
 
 The objective of this project was to come up with a solution for Rooftop Segmentation Problem, with limited dataset of 30 images and 30 labels. In this project I worked on 4 image segmentation models, 2 of which were trained from scratch (CNN, UNET) and rest 2 utilized the potential of Transfer Learning (Vgg16+Unet, MobileNetV2+Unet). The results were quite good 💫 given the less data constraints of this project.
-
----
-<img align = "left" width = "240" height = "180" src = "./Images/Us_Accidents_Project.png"> **[US Accidents Severity Prediction Project](https://github.com/Yuvraj-Dhepe/Projects/tree/main/US-Accidents-Project)**
-
-In this ML project I utilized the updated US Accidents dataset(2016-2023) consisting with more than 7 million accident records. The work included perform EDA on the dataset, cleaning the data, to make it suitable for classification, training and comparing various logistic regression algorithms like XGB, Random Forests, Naive Bayes, Logistic Regressor etc.
 
 ---
 <img align = "left" width = "240" height = "180" src = "./Images/StudentPerformance.jpg"> **[Students' Performance End to End Machine Learning Project](https://github.com/Yuvraj-Dhepe/ML_Web_Project)**
