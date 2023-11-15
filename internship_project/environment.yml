@@ -1,0 +1,8 @@
+name: internship_env # The Env Used to Handle Basic bits via Python like Project Structure Creation Using Cookie-Cutter, Renaming File etc.
+channels:
+  - conda-forge    # You can add more channels if needed
+
+dependencies:
+  - python=3.10      # Specify the Python version you want
+  - numpy
+  - pandas

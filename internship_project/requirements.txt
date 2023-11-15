@@ -1,0 +1,32 @@
+## Image
+opencv-python
+opencv-contrib-python
+imgaug
+Pillow
+PyYAML
+
+## Utilities
+scipy
+scikit-learn
+scikit-image
+matplotlib
+seaborn
+exifread
+psutil
+thop
+colored
+ipykernel
+
+##Computer Vision
+flatbuffers
+protobuf
+
+##DL
+torch
+torchvision
+tf-keras-vis
+#nvidia-cudnn-cu12: Install manually
+tensorflow
+tensorboard
+tensorboard-plugin-profile
+tensorflow-datasets
