@@ -33,4 +33,4 @@
 ---
 This report outlines the upcoming deadlines and provides a brief overview of the tasks and goals for each project phase.
 Following is the Gannt Chart highlighting the deadlines:
-<img align = "left" width = "240" height = "180" src = "https://github.com/Yuvraj-Dhepe/Projects/blob/main/internship_project/internship_files/internship_gantt_chart.png">
+<img align = "center" src = "https://github.com/Yuvraj-Dhepe/Projects/blob/main/internship_project/internship_files/internship_gantt_chart.png">
