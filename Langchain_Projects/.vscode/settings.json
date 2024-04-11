@@ -1,0 +1,102 @@
+{
+  "autoDocstring.customTemplatePath": "/home/yuvi_dh/.dotfiles/custom_docstring.mustache",
+  "autoDocstring.quoteStyle": "'''",
+  "autoDocstring.startOnNewLine": true,
+  "better-comments.highlightPlainText": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  //Global Editor Settings
+  "editor.tabSize": 4, // PEP 8 recommends 4 spaces for indentation
+  "editor.insertSpaces": true, // Use spaces instead of tabs for indentation
+  "editor.rulers": [80, 88], // Add vertical lines at 80 and 88 columns (PEP 8 recommendation)
+  "editor.formatOnSave": true,
+  "editor.autoIndent": "full",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.folding": true,
+  "editor.foldingHighlight": true,
+  "editor.matchBrackets": "always",
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.enabled": true,
+  "editor.minimap.scale": 2,
+  "editor.minimap.showSlider": "mouseover",
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 80,
+  "editor.suggest.showClasses": true,
+  "editor.tabCompletion": "on",
+  "editor.wordBasedSuggestions": true,
+  "editor.formatOnType": true,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.suggest.preview": true,
+  "editor.hover.enabled": true,
+  "indentRainbow.colors": [
+    "hex(#1f77b4)",
+    "hex(#ff7f0e)",
+    "hex(#2ca02c)",
+    "hex(#d62728)",
+    "hex(#9467bd)",
+    "hex(#8c564b)",
+    "hex(#e377c2)",
+    "hex(#7f7f7f)",
+    "hex(#bcbd22)",
+    "hex(#17becf)"
+  ],
+
+  "editor.colorDecorators": true,
+  "editor.defaultFormatter": "ms-python.autopep8",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "files.trimTrailingWhitespace": true,
+
+  "vsintellicode.features.python.deepLearning": "enabled",
+  "vsintellicode.python.completionsEnabled": true,
+
+  // Settings specific for a lnguage
+  // Python Settings
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.formatOnType": true
+  },
+  "python.analysis.inlayHints.callArgumentNames": "off",
+  "python.analysis.typeCheckingMode": "off",
+  "python.testing.unittestEnabled": true,
+  "python.testing.pytestEnabled": true,
+
+  // Markdown settings
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+
+  // Yaml settings
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "keep",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.quickSuggestionsDelay": 250,
+    "editor.wordBasedSuggestions": false
+  },
+
+  // Json Settings
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  }
+}

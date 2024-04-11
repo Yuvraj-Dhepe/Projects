@@ -1,0 +1,9 @@
+name: internship
+channels:
+    - conda-forge
+dependencies:
+    - python=3.9
+    - pip
+    - ninja
+    - cxx-compiler
+    - nccl
