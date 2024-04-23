@@ -1,0 +1,28 @@
+# Langchain
+langchain
+langchain-core
+langchain-community
+langgraph
+langchainhub
+langserve[all]
+langchain-cli
+langchain-groq
+
+# Web-App
+# taipy
+streamlit
+fastapi
+uvicorn
+sse-starlette
+
+
+# Other Libraries
+openai==1.3.7
+bs4
+chromadb
+faiss-cpu
+beautifulsoup4
+wikipedia
+pypdf
+arxiv
+groq
