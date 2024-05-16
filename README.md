@@ -27,7 +27,7 @@ In this project represents a comprehensive end-to-end machine learning workflow.
 
 <img align = "left" width = "240" height = "180" src = "./Images/SalesProject.jpg"> **[Power BI AtliQ Hardware Sales Insights](https://yuvraj-dhepe.github.io/DataBlog_V1/docs/projects/B1_Sales_Insights.html)**
 
-This Data Analysis project, I visualize the dummy dataset of AtliQ Hardware sales, to come with interesting insights that a virtual sales director can use to gain insights of his businsess in dynamically growing market. In this project, I perform basic **data cleaning**, **find insights** from the data in SQL, **perform ETL in Power BI** and finally build a comprehensive and Interactive **Power BI Dashboard for user interaction**
+In this Data Analysis project, I visualize the dummy dataset of AtliQ Hardware sales, to come with interesting insights that a virtual sales director can use to gain insights of his businsess in dynamically growing market. In this project, I perform basic **data cleaning**, **find insights** from the data in SQL, **perform ETL in Power BI** and finally build a comprehensive and Interactive **Power BI Dashboard for user interaction**
 
 ---
 
