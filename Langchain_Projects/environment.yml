@@ -2,5 +2,4 @@ name: langchain
 channels:
     - conda-forge
 dependencies:
-    - python=3.12
-    - pip
+    - python=3.12.0
