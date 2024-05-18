@@ -1,0 +1,67 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Debug Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "purpose": [
+                "debug-test"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Onnx",
+            "type": "python",
+            "request": "launch",
+            "program": "./py_scripts/onnx_benchmark_models.py",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "."
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "--gpu-id",
+                "0",
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Torch",
+            "type": "python",
+            "request": "launch",
+            "program": "./py_scripts/pytorch_benchmark_models.py",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "."
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "--gpu-id",
+                "0",
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug TRT",
+            "type": "python",
+            "request": "launch",
+            "program": "./py_scripts/trt_benchmark_models.py",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "."
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "--gpu-id",
+                "0",
+            ],
+            "justMyCode": false
+        }
+    ]
+}
