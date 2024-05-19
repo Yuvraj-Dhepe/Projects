@@ -41,15 +41,15 @@ def generate_anchors(feature_map_size, patch_size, ratios, shapes):
     # then subtract 8 from it to get the center
     # This center will be used to generate anchor bboxes
     # Generate center points for the feature map
-    ctr_x = np.arange(
+    corner_x = np.arange(
         patch_size, (feature_map_size + 1) * patch_size, patch_size
     )
-    ctr_y = np.arange(
+    corner_y = np.arange(
         patch_size, (feature_map_size + 1) * patch_size, patch_size
     )
 
     # Create a grid of center points
-    ctr = np.array([(x - 8, y - 8) for x in ctr_x for y in ctr_y])
+    ctr = np.array([(x - 8, y - 8) for x in corner_x for y in corner_y])
 
     # Calculate the total number of anchors
     num_anchors = (
@@ -62,7 +62,7 @@ def generate_anchors(feature_map_size, patch_size, ratios, shapes):
     index = 0
     # Iterate over each center point
     for c in ctr:
-        ctr_y, ctr_x = c
+        corner_y, corner_x = c
         # Iterate over each combination of ratio and scale
         for i in range(len(ratios)):
             for j in range(len(shapes)):
@@ -71,10 +71,10 @@ def generate_anchors(feature_map_size, patch_size, ratios, shapes):
                 w = patch_size * shapes[j] * np.sqrt(1.0 / ratios[i])
 
                 # Calculate the coordinates of the anchor box
-                anchors[index, 0] = ctr_y - h / 2.0  # y_min
-                anchors[index, 1] = ctr_x - w / 2.0  # x_min
-                anchors[index, 2] = ctr_y + h / 2.0  # y_max
-                anchors[index, 3] = ctr_x + w / 2.0  # x_max
+                anchors[index, 0] = corner_y - h / 2.0  # y_min
+                anchors[index, 1] = corner_x - w / 2.0  # x_min
+                anchors[index, 2] = corner_y + h / 2.0  # y_max
+                anchors[index, 3] = corner_x + w / 2.0  # x_max
 
                 # Move to the next anchor index
                 index += 1
