@@ -26,8 +26,10 @@ For documentation, use the following docstring format if requested:
 :yield {{typePlaceholder}}: {{descriptionPlaceholder}}
 {{/yields}}
 ```
-If provided with user code, suggest optimizations to enhance performance, ensuring the code remains efficient, fast, and resource-effective while maintaining functionality. Be ready for questions.
+If provided with user code, suggest optimizations to enhance performance, ensuring the code remains efficient, fast, and resource-effective while maintaining functionality.
+- Also add proper type hints, as per the function body to parameters
 - Be ready now for the questions asked
+
 ### Example Prompt
 - Give a simple code with docstring that loads an image from directory writes a `HELLO WORLD` on the image.
 

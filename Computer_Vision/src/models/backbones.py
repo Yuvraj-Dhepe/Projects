@@ -33,6 +33,15 @@ class VGG16(nn.Module):
         """
         return self.model(x)
 
+    def pool_to_feature_vector(self, rois):
+        """
+        Flatten the input tensor.
+
+        @param rois: Input tensor from RoI pooling.
+        @return: Flattened tensor.
+        """
+        return rois.view(rois.size(0), -1)
+
 
 @backbone_registry.BackBoneRegistry.register("RESNET34")
 class RESNET34(nn.Module):

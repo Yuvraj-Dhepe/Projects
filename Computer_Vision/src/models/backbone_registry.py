@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from typing import Dict, Type, Tuple
+from typing import Dict, Type, Tuple, Optional, Callable
 
 
 class BackBoneRegistry:
@@ -30,42 +30,47 @@ class BackBoneRegistry:
 
     @classmethod
     def create_backbone(
-        cls, name: str, input_shape: Tuple[int, int, int], **kwargs
-    ) -> Tuple[torch.Size, nn.Module]:
+        cls,
+        name: str,
+        input_shape: Tuple[int, int, int],
+        pool_to_feature_vector: bool = False,
+        **kwargs
+    ) -> Tuple[torch.Size, nn.Module, Optional[Callable]]:
         """
         Creates a backbone and extracts its feature layers.
 
         @param str name: The name of the backbone to create.
         @param Tuple[int, int, int] input_shape: Shape of the input
         tensor (C, H, W).
+        @param bool pool_to_feature_vector: Whether to return the
+        pool_to_feature_vector function or not.
         @param kwargs: Additional arguments to pass to the backbone
         class constructor.
-        @return Tuple[torch.Size, nn.Module]: A tuple containing the shape of
-        the last layer of the extracted backbone, and the
-        feature extractor network.
+        @return Tuple[torch.Size, nn.Module, Optional[Callable]]: A tuple
+        containing
+        the shape of the last layer of the extracted backbone, the feature
+        extractor
+        network, and the pool_to_feature_vector function (if requested).
         """
         model_class = cls.registry[name]
-        model = model_class(**kwargs).model
+        model = model_class(**kwargs)
         # Initialize the model, as the model_class returns
         # a self.model variable.
         if name == "VGG16":
             last_layer_shape, backbone = extract_backbone_layers(
-                model, input_shape, until_layer=-1
+                model.model, input_shape, until_layer=-1
             )
 
-        elif name == "RESNET50":
+        elif name in ["RESNET50", "RESNET101", "RESNET34"]:
             last_layer_shape, backbone = extract_backbone_layers(
-                model, input_shape, until_layer=-2
+                model.model, input_shape, until_layer=-2
             )
-        elif name == "RESNET101":
-            last_layer_shape, backbone = extract_backbone_layers(
-                model, input_shape, until_layer=-2
-            )
-        elif name == "RESNET34":
-            last_layer_shape, backbone = extract_backbone_layers(
-                model, input_shape, until_layer=-2
-            )
-        return last_layer_shape, backbone
+
+        pool_to_feature_vector_func = None
+        if pool_to_feature_vector:
+            pool_to_feature_vector_func = model.pool_to_feature_vector
+
+        return last_layer_shape, backbone, pool_to_feature_vector_func
 
 
 def extract_backbone_layers(

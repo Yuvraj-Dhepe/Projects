@@ -69,10 +69,10 @@
 
 ## PLAN
 
-- [ ] Create a Dataset class, that initializes data splits
-- [ ] Create a BackBone Registry for the feature extracting cnn backbones
-- [ ] Create a RPN having the following functionalities:
+- [x] Create a Dataset class, that initializes data splits
+- [x] Create a BackBone Registry for the feature extracting cnn backbones
 
+- [ ] Create a RPN having the following functionalities:
   - [ ] One function taking input of feature map, anchor bbox information (scales, ratios) -> Returning the Valid Anchor Bboxes
   - [ ] One function taking the Valid Anchor Bboxes, assigning positive and negative labels as per the paper based on IoUs. -> Returning Labels & Bboxes
   - [ ] One function generating Target Anchor Bboxes & Valid Labels to Train the RPN

@@ -3,6 +3,8 @@ numpy
 pandas
 matplotlib
 ipython
+seaborn
+
 
 # TF
 
