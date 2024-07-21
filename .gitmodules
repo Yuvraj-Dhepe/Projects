@@ -1,3 +1,6 @@
 [submodule "Audio_DL/DCASE2024_seld_baseline"]
 	path = Audio_DL/DCASE2024_seld_baseline
 	url = https://github.com/partha2409/DCASE2024_seld_baseline.git
+[submodule "Audio_DL/dcase2023-audio-retrieval"]
+	path = Audio_DL/dcase2023-audio-retrieval
+	url = git@github.com:Yuvraj-Dhepe/dcase2023-audio-retrieval.git
