@@ -20,4 +20,5 @@ With help of langchain we combine document chunks, from a vector db to a prompt 
 
 ### Rag From Scratch Project
 
-####
+#### Part 1
+- Implementing a
