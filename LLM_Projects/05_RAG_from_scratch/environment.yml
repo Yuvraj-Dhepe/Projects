@@ -1,5 +1,0 @@
-name: llm_proj_ddos_1
-channels:
-    - conda-forge
-dependencies:
-    - python=3.12.0

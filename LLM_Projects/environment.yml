@@ -1,4 +1,4 @@
-name: receipts_vlm
+name: env_name
 channels:
     - conda-forge
 dependencies:
