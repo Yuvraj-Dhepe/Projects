@@ -1,4 +1,4 @@
-name: llm_proj_ddos_1
+name: receipts_vlm
 channels:
     - conda-forge
 dependencies:

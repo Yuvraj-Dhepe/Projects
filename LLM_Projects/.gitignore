@@ -1,6 +1,15 @@
 # Custom Files
-./Rooftop_Classification_Project/Colab_Version.ipynb
-*.Identifier
+06_OCR_Fine_Tuning/*
+unsloth_compiled_cache/*
+05_RAG_from_scratch/qdrant_storage
+test_files/*
+logs/*
+fin_viz/*
+data/
+temp/
+wandb/
+z_ckpts/
+pretrained_models/*.pth
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
