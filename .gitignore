@@ -1,5 +1,8 @@
 # Custom Files
 ./Rooftop_Classification_Project/Colab_Version.ipynb
+Audio_DL/EzAudio/
+Audio_DL/audiocraft_plus/
+metabase/
 *.Identifier
 # Byte-compiled / optimized / DLL files
 __pycache__/
