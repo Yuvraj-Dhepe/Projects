@@ -1,4 +1,5 @@
 # Custom Files
+.gradio/
 06_OCR_Fine_Tuning/*
 unsloth_compiled_cache/*
 05_RAG_from_scratch/qdrant_storage

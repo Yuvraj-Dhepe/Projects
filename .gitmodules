@@ -4,3 +4,9 @@
 [submodule "Audio_DL/dcase2023-audio-retrieval"]
 	path = Audio_DL/dcase2023-audio-retrieval
 	url = git@github.com:Yuvraj-Dhepe/dcase2023-audio-retrieval.git
+[submodule "LLM_Projects/LM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS"]
+	path = LLM_Projects/LM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS
+	url = https://huggingface.co/spaces/yuvidhepe/Smol_Agent_U01_HF_CRS
+[submodule "LLM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS"]
+	path = LLM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS
+	url = https://huggingface.co/spaces/yuvidhepe/Smol_Agent_U01_HF_CRS
