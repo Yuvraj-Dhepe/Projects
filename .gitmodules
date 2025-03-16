@@ -7,3 +7,6 @@
 [submodule "LLM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS"]
 	path = LLM_Projects/07_HF_Agents_Crs/01_dummy_agent/Smol_Agent_U01_HF_CRS
 	url = https://huggingface.co/spaces/yuvidhepe/Smol_Agent_U01_HF_CRS
+[submodule "Computer_Vision/NexarDashCamPrediction2024"]
+	path = Computer_Vision/NexarDashCamPrediction2024
+	url = git@github.com:Yuvraj-Dhepe/NexarDashCamPrediction2024.git
