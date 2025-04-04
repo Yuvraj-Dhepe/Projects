@@ -1,2 +1,9 @@
 huggingface_hub
 ipykernel
+markdownify
+smolagents
+requests
+pandas
+datetime
+huggingface_hub
+pytz
