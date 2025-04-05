@@ -158,10 +158,7 @@
             </button>
           </div>
           <div class="career-info-content overflow-y-auto max-h-[70vh]">
-            <div v-if="careerPathInfo" v-html="careerPathInfo"></div>
-            <div v-else class="text-center py-8 text-neutral/70">
-              No information available for this career path.
-            </div>
+            <PagedCareerInfo :content="careerPathInfo" />
           </div>
         </div>
 
@@ -238,7 +235,7 @@ onMounted(async () => {
 async function fetchCareerPathInfo() {
   try {
     console.log('Fetching career path info for:', careerPathId.value);
-    const response = await fetch(`/api/career-path-info/${careerPathId.value}`);
+    const response = await fetch(`/api/career-paths/${careerPathId.value}/info`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch career path info: ${response.statusText}`);
@@ -247,10 +244,10 @@ async function fetchCareerPathInfo() {
     const data = await response.json();
     console.log('Career path info response:', data);
 
-    if (data && data.content) {
-      careerPathInfo.value = data.content;
+    if (data && data.html) {
+      careerPathInfo.value = data.html;
     } else {
-      console.warn('No content found in career path info response');
+      console.warn('No HTML content found in career path info response');
       careerPathInfo.value = '<p>No information available for this career path.</p>';
     }
   } catch (err) {

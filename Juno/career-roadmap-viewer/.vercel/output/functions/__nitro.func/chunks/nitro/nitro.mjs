@@ -3996,7 +3996,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "25c91e34-6011-435f-8cd0-a27170c29302",
+    "buildId": "9b5737d5-39fc-4814-bb3b-7a5cea084a53",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4432,6 +4432,7 @@ const plugins = [
 
 const _lazy_zSq7xK = () => import('../routes/api/career-path-info/_path_.mjs');
 const _lazy_ztFyOm = () => import('../routes/api/career-paths.mjs');
+const _lazy_DUNoyq = () => import('../routes/api/career-paths/_id/info.mjs');
 const _lazy_HsYm9N = () => import('../routes/api/diagrams/_path_.mjs');
 const _lazy_7OW2KJ = () => import('../routes/api/mermaid-code/_path_.mjs');
 const _lazy_x_SSut = () => import('../routes/renderer.mjs').then(function (n) { return n.r; });
@@ -4439,6 +4440,7 @@ const _lazy_x_SSut = () => import('../routes/renderer.mjs').then(function (n) { 
 const handlers = [
   { route: '/api/career-path-info/:path', handler: _lazy_zSq7xK, lazy: true, middleware: false, method: undefined },
   { route: '/api/career-paths', handler: _lazy_ztFyOm, lazy: true, middleware: false, method: undefined },
+  { route: '/api/career-paths/:id/info', handler: _lazy_DUNoyq, lazy: true, middleware: false, method: undefined },
   { route: '/api/diagrams/:path', handler: _lazy_HsYm9N, lazy: true, middleware: false, method: undefined },
   { route: '/api/mermaid-code/:path', handler: _lazy_7OW2KJ, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_x_SSut, lazy: true, middleware: false, method: undefined },
