@@ -55,5 +55,6 @@
     },
     "peacock.remoteColor": "#42b883",
     "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 300,
+    "files.autoSaveDelay": 300
+    
 }

@@ -1,0 +1,28 @@
+{
+"augment.advanced": {
+    "mcpServers": [
+      {
+        "name": "serper-search",
+        "command": "npx",
+        "args": ["-y", "serper-search-scrape-mcp-server"],
+        "env": {
+          "SERPER_API_KEY": "key"
+        }
+      },
+      {
+        "name": "firecrawl-mcp",
+        "command": "npx",
+        "args": ["-y", "firecrawl-mcp"],
+        "env": {
+          "FIRECRAWL_API_KEY": "key"
+        }
+      },
+      {
+        "name": "sequential-thinking", 
+        "command": "npx",
+        "args": ["-y", "sequential-thinking-mcp-server"]
+      }
+    ]
+    }
+
+}

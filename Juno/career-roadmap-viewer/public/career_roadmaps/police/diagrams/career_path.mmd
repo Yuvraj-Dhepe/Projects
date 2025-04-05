@@ -1,0 +1,139 @@
+graph TD
+    classDef phase1 fill:#dcedc8,stroke:#333,stroke-width:1px
+    classDef phase2 fill:#aed581,stroke:#333,stroke-width:1px
+    classDef phase3 fill:#8bc34a,stroke:#333,stroke-width:1px
+    classDef phase4 fill:#689f38,stroke:#333,stroke-width:1px
+    classDef constable fill:#bbdefb,stroke:#333,stroke-width:1px
+    classDef si fill:#c8e6c9,stroke:#333,stroke-width:1px
+    classDef ips fill:#d1c4e9,stroke:#333,stroke-width:1px
+    classDef milestone fill:#ffab91,stroke:#333,stroke-width:2px,color:#000
+    
+    A[10th Grade Completion] --> B[11th & 12th Science]
+    
+    B --> C{Choose Entry Route}
+    
+    C --> D[Constable Route<br>After 12th]
+    C --> E[Sub-Inspector Route<br>After Graduation]
+    C --> F[IPS Route<br>UPSC Civil Services]
+    
+    D --> G[Written Exam<br>Physical Tests]
+    E --> H[Bachelor's Degree]
+    F --> I[Bachelor's Degree]
+    
+    H --> J[SI Recruitment Exam]
+    I --> K[UPSC Civil Services Exam]
+    
+    G --> L[Police Training<br>9-12 months]
+    J --> M[SI Training<br>1 year]
+    K --> N[IPS Training<br>2 years]
+    
+    L --> O[Police Constable]
+    M --> P[Sub-Inspector]
+    N --> Q[IPS Officer]
+    
+    O --> R[Career Progression<br>Constable Track]
+    P --> S[Career Progression<br>SI Track]
+    Q --> T[Career Progression<br>IPS Track]
+    
+    subgraph "Phase 1: Foundation (2 years)"
+        B
+        B1[Academic Performance]
+        B2[Physical Fitness]
+        B3[Communication Skills]
+        B4[General Knowledge]
+        B5[Marathi Language]
+        B --> B1
+        B --> B2
+        B --> B3
+        B --> B4
+        B --> B5
+    end
+    
+    subgraph "Phase 2: Entry Route Selection"
+        C
+        D
+        E
+        F
+        
+        H
+        I
+    end
+    
+    subgraph "Phase 3: Selection Process"
+        G
+        G1[Written Examination]
+        G2[Physical Fitness Test]
+        G3[Document Verification]
+        G4[Medical Examination]
+        G --> G1
+        G1 --> G2
+        G2 --> G3
+        G3 --> G4
+        
+        J
+        J1[Written Examination]
+        J2[Physical Fitness Test]
+        J3[Document Verification]
+        J4[Medical Examination]
+        J5[Personal Interview]
+        J --> J1
+        J1 --> J2
+        J2 --> J3
+        J3 --> J4
+        J4 --> J5
+        
+        K
+        K1[Preliminary Exam]
+        K2[Main Examination]
+        K3[Interview]
+        K --> K1
+        K1 --> K2
+        K2 --> K3
+    end
+    
+    subgraph "Phase 4: Career & Progression"
+        L
+        M
+        N
+        
+        O
+        P
+        Q
+        
+        R
+        R1[Head Constable]
+        R2[ASI]
+        R --> R1
+        R1 --> R2
+        
+        S
+        S1[Inspector]
+        S2[ACP/Dy.SP]
+        S --> S1
+        S1 --> S2
+        
+        T
+        T1[SP]
+        T2[DIG]
+        T3[IG]
+        T4[ADG]
+        T5[DG]
+        T --> T1
+        T1 --> T2
+        T2 --> T3
+        T3 --> T4
+        T4 --> T5
+    end
+    
+    MS1[Milestone: 12th Completion] -.-> C
+    MS2[Milestone: Selection] -.-> L
+    MS3[Milestone: First Posting] -.-> O
+    
+    class A,B,B1,B2,B3,B4,B5 phase1
+    class C,D,E,F,H,I phase2
+    class G,G1,G2,G3,G4,J,J1,J2,J3,J4,J5,K,K1,K2,K3 phase3
+    class L,M,N,O,P,Q,R,R1,R2,S,S1,S2,T,T1,T2,T3,T4,T5 phase4
+    class D,G,L,O,R,R1,R2 constable
+    class E,H,J,M,P,S,S1,S2 si
+    class F,I,K,N,Q,T,T1,T2,T3,T4,T5 ips
+    class MS1,MS2,MS3 milestone

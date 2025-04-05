@@ -1,0 +1,55 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "python.formatting.provider": "none",
+    "editor.wordWrap": "on",
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+          "source.fixAll": "explicit",
+          "source.organizeImports": "explicit"
+        }
+    },
+    "ruff.lint.args": [
+        "--line-length=120"
+    ],
+    "ruff.format.args": [
+        "--line-length=120"
+    ],
+    "ruff.lint.run": "onSave",
+    "ruff.organizeImports": true,
+    "ruff.lint.fixAll": true,
+    "augment.advanced": {
+    "mcpServers": [
+      {
+        "name": "serper-search",
+        "command": "npx",
+        "args": ["-y", "serper-search-scrape-mcp-server"],
+        "env": {
+          "SERPER_API_KEY": "fd3fffe420e5740f87b54ffa8744f24cc98aeb9b"
+        }
+      },
+      {
+        "name": "firecrawl-mcp",
+        "command": "npx",
+        "args": ["-y", "firecrawl-mcp"],
+        "env": {
+          "FIRECRAWL_API_KEY": "fc-c49d78e5f3194d4781ba22ad3a9baf65"
+        }
+      },
+      {
+        "name": "sequential-thinking",
+        "command": "npx",
+        "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@smithery-ai/server-sequential-thinking",
+        "--key",
+        "43c394e2-e408-4df3-869c-bdc7bd6b0532" 
+      ]
+      }
+    ]
+    }
+
+}

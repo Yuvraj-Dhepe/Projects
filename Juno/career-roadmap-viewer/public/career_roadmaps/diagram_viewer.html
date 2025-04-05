@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Roadmap Diagram Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button.active {
+            background-color: #2c3e50;
+        }
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .diagram-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .diagram-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .diagram-title {
+            margin: 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .diagram-content {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            background-color: white;
+        }
+        .diagram-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .render-button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        #renderAllButton {
+            background-color: #27ae60;
+        }
+        #renderAllButton:hover {
+            background-color: #219653;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .diagram-grid {
+                grid-template-columns: 1fr;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Career Roadmap Diagram Viewer</h1>
+
+        <div class="controls">
+            <button id="viewPngButton" class="active">View PNG Diagrams</button>
+            <button id="viewSvgButton">View SVG Diagrams</button>
+        </div>
+
+        <div class="render-button-container">
+            <button id="renderAllButton">Render All Diagrams</button>
+        </div>
+
+        <div id="diagramsContainer" class="diagram-grid">
+            <div class="loading">Loading career path diagrams...</div>
+        </div>
+
+        <div class="footer">
+            <p>This viewer displays career roadmap diagrams for various career paths.</p>
+            <p><small>Diagrams are rendered using <a href="https://mermaid.js.org/" target="_blank">Mermaid.js</a></small></p>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const viewPngButton = document.getElementById('viewPngButton');
+        const viewSvgButton = document.getElementById('viewSvgButton');
+        const renderAllButton = document.getElementById('renderAllButton');
+        const diagramsContainer = document.getElementById('diagramsContainer');
+
+        // Current view mode (png or svg)
+        let currentMode = 'png';
+
+        // Function to format career path name for display
+        function formatCareerPathName(path) {
+            return path
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Function to discover all career paths
+        async function discoverCareerPaths() {
+            try {
+                // Fetch the list of directories
+                const response = await fetch('./'); // This will get the directory listing
+                const html = await response.text();
+
+                // Parse the HTML to find directories that might be career paths
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const links = Array.from(doc.querySelectorAll('a'));
+
+                // Filter for directories that might be career paths
+                const potentialPaths = links
+                    .map(link => link.getAttribute('href'))
+                    .filter(href =>
+                        href &&
+                        href.endsWith('/') &&
+                        !href.startsWith('..') &&
+                        href !== './' &&
+                        !['rendered_diagrams/', 'node_modules/'].includes(href)
+                    )
+                    .map(href => href.slice(0, -1)); // Remove trailing slash
+
+                // Check each potential path for diagram files
+                const careerPaths = [];
+
+                for (const path of potentialPaths) {
+                    try {
+                        // Check if the diagrams directory exists with career_path.mmd
+                        const checkResponse = await fetch(`./${path}/diagrams/career_path.mmd`, { method: 'HEAD' });
+                        if (checkResponse.ok) {
+                            careerPaths.push(path);
+                        }
+                    } catch (error) {
+                        console.log(`${path} is not a valid career path:`, error);
+                    }
+                }
+
+                return careerPaths;
+            } catch (error) {
+                console.error('Error discovering career paths:', error);
+                return [];
+            }
+        }
+
+        // Function to load and display all diagrams
+        async function loadDiagrams(mode = '.png') {
+            diagramsContainer.innerHTML = '<div class="loading">Loading career path diagrams...</div>';
+
+            try {
+                // Discover all career paths
+                const careerPaths = await discoverCareerPaths();
+
+                if (careerPaths.length === 0) {
+                    diagramsContainer.innerHTML = '<div class="loading">No career paths found. Please check the directory structure.</div>';
+                    return;
+                }
+
+                // Clear the container
+                diagramsContainer.innerHTML = '';
+
+                // Create a card for each career path
+                careerPaths.forEach(path => {
+                    const card = document.createElement('div');
+                    card.className = 'diagram-card';
+
+                    const header = document.createElement('div');
+                    header.className = 'diagram-header';
+
+                    const title = document.createElement('h3');
+                    title.className = 'diagram-title';
+                    title.textContent = formatCareerPathName(path);
+
+                    const content = document.createElement('div');
+                    content.className = 'diagram-content';
+                    content.id = `diagram-${path}`;
+
+                    // Add image based on mode
+                    const img = document.createElement('img');
+                    img.src = `./${path}/diagrams/career_path.${mode}`;
+                    img.alt = `${formatCareerPathName(path)} Career Path`;
+                    img.onerror = function() {
+                        this.onerror = null;
+                        content.innerHTML = `<div class="loading">Diagram not found. Please run the render script.</div>`;
+                    };
+
+                    content.appendChild(img);
+                    header.appendChild(title);
+                    card.appendChild(header);
+                    card.appendChild(content);
+                    diagramsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading diagrams:', error);
+                diagramsContainer.innerHTML = `<div class="loading">Error loading diagrams: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load PNG diagrams by default
+            loadDiagrams('png');
+
+            // Button event listeners
+            viewPngButton.addEventListener('click', function() {
+                if (currentMode !== 'png') {
+                    currentMode = 'png';
+                    viewPngButton.classList.add('active');
+                    viewSvgButton.classList.remove('active');
+                    loadDiagrams('png');
+                }
+            });
+
+            viewSvgButton.addEventListener('click', function() {
+                if (currentMode !== 'svg') {
+                    currentMode = 'svg';
+                    viewSvgButton.classList.add('active');
+                    viewPngButton.classList.remove('active');
+                    loadDiagrams('svg');
+                }
+            });
+
+            renderAllButton.addEventListener('click', function() {
+                if (confirm('This will render all diagrams using the mermaid-cli tool. Continue?')) {
+                    // Open a new window/tab with instructions
+                    const instructionsWindow = window.open('', '_blank');
+                    instructionsWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>Rendering Diagrams</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+                                pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+                                .note { background: #fffde7; padding: 10px; border-left: 4px solid #ffd600; margin: 20px 0; }
+                            </style>
+                        </head>
+                        <body>
+                            <h1>Rendering All Diagrams</h1>
+                            <p>To render all diagrams, run the following command in your terminal:</p>
+                            <pre>cd ${window.location.pathname.split('/').slice(0, -1).join('/')} && ./render_all_diagrams.sh</pre>
+
+                            <div class="note">
+                                <h3>Note:</h3>
+                                <p>This will use the mermaid-cli (mmdc) command to render all diagrams to PNG and SVG formats.</p>
+                                <p>The rendered diagrams will be saved in each career path's diagrams folder.</p>
+                            </div>
+
+                            <p>After rendering is complete, refresh this page to view the updated diagrams.</p>
+                        </body>
+                        </html>
+                    `);
+                    instructionsWindow.document.close();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
