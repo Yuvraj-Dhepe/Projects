@@ -1,10 +1,10 @@
 <template>
   <div class="animate-fadeIn">
-    <div class="mb-8 text-center">
-      <h1 class="text-4xl font-bold mb-4 text-primary">
+    <div class="mb-12 text-center">
+      <h1 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
         Career Roadmap Explorer
       </h1>
-      <p class="text-lg max-w-3xl mx-auto text-neutral/80 mb-12">
+      <p class="text-lg max-w-3xl mx-auto text-neutral/80 mb-12 leading-relaxed">
         Explore interactive career roadmaps for various paths. These diagrams provide a visual guide to help you
         understand the journey from education to career success. Choose a career path below to get started!
       </p>
@@ -13,8 +13,8 @@
     <!-- Loading indicator -->
     <div v-if="loading" class="flex justify-center items-center py-16">
       <div class="relative w-16 h-16">
-        <div class="absolute top-0 left-0 w-full h-full border-4 border-secondary/30 rounded-full"></div>
-        <div class="absolute top-0 left-0 w-full h-full border-4 border-secondary rounded-full animate-spin border-t-transparent"></div>
+        <div class="absolute top-0 left-0 w-full h-full border-4 border-primary/20 rounded-full"></div>
+        <div class="absolute top-0 left-0 w-full h-full border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
       </div>
     </div>
 
@@ -117,12 +117,11 @@ const errorMessage = ref(null);
 
 // Bubble colors and sizes
 const bubbleColors = [
-  '#4A6163', // primary
-  '#F9C846', // secondary
-  '#2F4858', // neutral
-  '#5D8A66', // green
-  '#D95D39', // orange
-  '#7B506F', // purple
+  '#3B82F6', // primary (blue)
+  '#10B981', // secondary (emerald)
+  '#8B5CF6', // accent (purple)
+  '#F59E0B', // warning (amber)
+  '#06B6D4' // info (cyan)
 ];
 
 // Fetch career paths on component mount

@@ -11,11 +11,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#4A6163',    // Teal/green from SunVault
-        secondary: '#F9C846',  // Yellow from SunVault
-        accent: '#F8F4E3',     // Light cream from SunVault
-        neutral: '#2F4858',    // Dark blue-green from SunVault
+        primary: '#3B82F6',    // Modern blue
+        secondary: '#10B981',  // Emerald green
+        accent: '#8B5CF6',     // Purple
+        neutral: '#1F2937',    // Dark gray
+        info: '#06B6D4',       // Cyan
+        success: '#22C55E',    // Green
+        warning: '#F59E0B',    // Amber
+        error: '#EF4444',      // Red
         'base-100': '#ffffff',
+        'base-200': '#F9FAFB',
+        'base-300': '#F3F4F6',
       },
       animation: {
         'fadeIn': 'fadeIn 0.5s ease-in-out',
@@ -39,15 +45,19 @@ export default {
     themes: [
       {
         light: {
-          primary: '#4A6163',
-          secondary: '#F9C846',
-          accent: '#F8F4E3',
-          neutral: '#2F4858',
+          primary: '#3B82F6',    // Modern blue
+          secondary: '#10B981',  // Emerald green
+          accent: '#8B5CF6',     // Purple
+          neutral: '#1F2937',    // Dark gray
+          info: '#06B6D4',       // Cyan
+          success: '#22C55E',    // Green
+          warning: '#F59E0B',    // Amber
+          error: '#EF4444',      // Red
           'base-100': '#ffffff',
+          'base-200': '#F9FAFB',
+          'base-300': '#F3F4F6',
         },
       },
-      'light',
-      'dark',
     ],
   },
 }
