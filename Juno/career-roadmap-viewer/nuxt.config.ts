@@ -6,6 +6,9 @@ export default defineNuxtConfig({
   // Enable Tailwind CSS
   modules: ['@nuxtjs/tailwindcss'],
 
+  // Global CSS
+  css: ['~/assets/css/career-info.css'],
+
   // Configure app
   app: {
     head: {
@@ -14,7 +17,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Interactive explorer for career roadmap diagrams to help students visualize their career paths' },
-        { name: 'theme-color', content: '#4361ee' },
+        { name: 'theme-color', content: '#4A6163' },
         { name: 'og:title', content: 'Career Roadmap Explorer' },
         { name: 'og:description', content: 'Interactive explorer for career roadmap diagrams to help students visualize their career paths' },
         { name: 'og:type', content: 'website' },

@@ -13,14 +13,25 @@ import 'node:crypto';
 const _path_ = defineEventHandler(async (event) => {
   try {
     const careerPath = getRouterParam(event, "path");
-    const careerRoadmapsDir = path.resolve(process.cwd(), "../career_roadmaps");
+    const careerRoadmapsDir = path.resolve(process.cwd(), "public/career_roadmaps");
+    const careerGoalPath = path.join(careerRoadmapsDir, careerPath, "career_goal.md");
     const readmePath = path.join(careerRoadmapsDir, careerPath, "README.md");
-    if (!fs.existsSync(readmePath)) {
+    let filePath;
+    if (fs.existsSync(careerGoalPath)) {
+      filePath = careerGoalPath;
+    } else if (fs.existsSync(readmePath)) {
+      filePath = readmePath;
+    } else {
       return { content: null };
     }
-    const fileContent = fs.readFileSync(readmePath, "utf-8");
+    const fileContent = fs.readFileSync(filePath, "utf-8");
     const htmlContent = marked(fileContent);
-    return { content: htmlContent };
+    const styledHtmlContent = `
+      <div class="career-info">
+        ${htmlContent}
+      </div>
+    `;
+    return { content: styledHtmlContent };
   } catch (error) {
     console.error("Error getting career path info:", error);
     setResponseStatus(event, 500);

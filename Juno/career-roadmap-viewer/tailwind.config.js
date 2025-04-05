@@ -11,10 +11,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#4361ee',    // Bright blue
-        secondary: '#7209b7',  // Purple
-        accent: '#f72585',     // Pink
-        neutral: '#2b2d42',    // Dark blue-gray
+        primary: '#4A6163',    // Teal/green from SunVault
+        secondary: '#F9C846',  // Yellow from SunVault
+        accent: '#F8F4E3',     // Light cream from SunVault
+        neutral: '#2F4858',    // Dark blue-green from SunVault
         'base-100': '#ffffff',
       },
       animation: {
@@ -39,18 +39,11 @@ export default {
     themes: [
       {
         light: {
-          primary: '#4361ee',
-          secondary: '#7209b7',
-          accent: '#f72585',
-          neutral: '#2b2d42',
+          primary: '#4A6163',
+          secondary: '#F9C846',
+          accent: '#F8F4E3',
+          neutral: '#2F4858',
           'base-100': '#ffffff',
-        },
-        dark: {
-          primary: '#4361ee',
-          secondary: '#7209b7',
-          accent: '#f72585',
-          neutral: '#2b2d42',
-          'base-100': '#1f2937',
         },
       },
       'light',

@@ -26,7 +26,7 @@
         "command": "npx",
         "args": ["-y", "serper-search-scrape-mcp-server"],
         "env": {
-          "SERPER_API_KEY": "api_key"
+          "SERPER_API_KEY": "7277ef22f96c11a3abdc1cb79386972316123912"
         }
       },
       {
@@ -34,7 +34,7 @@
         "command": "npx",
         "args": ["-y", "firecrawl-mcp"],
         "env": {
-          "FIRECRAWL_API_KEY": "api_key"
+          "FIRECRAWL_API_KEY": "fc-e65a4c18b8b44580afbfcd9ed3dc8d6a"
         }
       },
       {
@@ -46,7 +46,7 @@
         "run",
         "@smithery-ai/server-sequential-thinking",
         "--key",
-        "api_key" 
+        "e7f6f5a9-d019-4783-9b2f-0aefa607e7cf" 
       ]
       }
     ]

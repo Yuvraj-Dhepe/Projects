@@ -1,23 +1,20 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-base-100 text-base-content">
+  <div class="min-h-screen flex flex-col bg-white text-neutral">
     <!-- Header -->
-    <header class="navbar bg-gradient-to-r from-primary to-secondary text-primary-content shadow-lg">
+    <header class="py-4 bg-primary text-white shadow-md">
       <div class="container mx-auto px-4">
-        <div class="flex-1">
-          <NuxtLink to="/" class="btn btn-ghost normal-case text-xl font-bold">
-            <span class="text-2xl mr-2">🚀</span> Career Roadmap Explorer
+        <div class="flex items-center justify-between">
+          <NuxtLink to="/" class="flex items-center space-x-2 text-xl font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span>Career Roadmap Explorer</span>
           </NuxtLink>
-        </div>
-        <div class="flex-none">
-          <!-- Theme toggle -->
-          <button @click="toggleTheme" class="btn btn-ghost btn-circle">
-            <svg v-if="isDarkTheme" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          </button>
+          <nav class="hidden md:flex space-x-6">
+            <a href="#" class="hover:text-secondary transition-colors duration-200">Home</a>
+            <a href="#" class="hover:text-secondary transition-colors duration-200">Explore</a>
+            <a href="#" class="hover:text-secondary transition-colors duration-200">About</a>
+          </nav>
         </div>
       </div>
     </header>
@@ -27,26 +24,17 @@
       <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="footer footer-center p-6 bg-base-200 text-base-content">
-      <div class="grid grid-flow-col gap-4">
-        <a href="#" class="link link-hover">About</a>
-        <a href="#" class="link link-hover">Contact</a>
-        <a href="#" class="link link-hover">Help</a>
-      </div>
-      <div>
-        <div class="grid grid-flow-col gap-4">
-          <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg></a>
-          <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg></a>
-          <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path></svg></a>
+    <!-- Footer with animation -->
+    <footer class="py-6 bg-primary text-white">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-center">
+          <!-- Animated wave -->
+          <div class="w-full h-12 overflow-hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full animate-pulse-slow" preserveAspectRatio="none">
+              <path fill="rgba(249, 200, 70, 0.3)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+          </div>
         </div>
-      </div>
-      <div>
-        <p>
-          Career Roadmap Explorer - Created with
-          <a href="https://nuxt.com" target="_blank" class="link link-primary">Nuxt.js</a> and
-          <a href="https://mermaid.js.org/" target="_blank" class="link link-primary">Mermaid.js</a>
-        </p>
       </div>
     </footer>
   </div>

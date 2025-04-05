@@ -1,4 +1,4 @@
-import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};export { C as default } from './chunks/nitro/nitro.mjs';
+import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};export { B as default } from './chunks/nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
 import 'node:events';

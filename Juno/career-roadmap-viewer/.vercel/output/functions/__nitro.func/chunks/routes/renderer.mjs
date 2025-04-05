@@ -72,7 +72,7 @@ function createHead(options = {}) {
   return head;
 }
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"Interactive explorer for career roadmap diagrams to help students visualize their career paths"},{"name":"theme-color","content":"#4361ee"},{"name":"og:title","content":"Career Roadmap Explorer"},{"name":"og:description","content":"Interactive explorer for career roadmap diagrams to help students visualize their career paths"},{"name":"og:type","content":"website"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"title":"Career Roadmap Explorer"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"Interactive explorer for career roadmap diagrams to help students visualize their career paths"},{"name":"theme-color","content":"#4A6163"},{"name":"og:title","content":"Career Roadmap Explorer"},{"name":"og:description","content":"Interactive explorer for career roadmap diagrams to help students visualize their career paths"},{"name":"og:type","content":"website"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"title":"Career Roadmap Explorer"};
 
 const appRootTag = "div";
 

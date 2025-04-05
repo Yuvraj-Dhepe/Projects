@@ -12,7 +12,7 @@ import 'node:crypto';
 const _path_ = defineEventHandler(async (event) => {
   try {
     const careerPath = getRouterParam(event, "path");
-    const careerRoadmapsDir = path.resolve(process.cwd(), "../career_roadmaps");
+    const careerRoadmapsDir = path.resolve(process.cwd(), "public/career_roadmaps");
     const mermaidPath = path.join(careerRoadmapsDir, careerPath, "diagrams", "career_path.mmd");
     if (!fs.existsSync(mermaidPath)) {
       throw new Error(`Mermaid file not found: ${mermaidPath}`);

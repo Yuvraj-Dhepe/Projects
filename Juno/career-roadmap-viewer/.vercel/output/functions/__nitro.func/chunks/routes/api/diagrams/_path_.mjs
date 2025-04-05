@@ -17,7 +17,7 @@ const _path_ = defineEventHandler(async (event) => {
     if (!["png", "svg"].includes(format)) {
       throw new Error("Invalid format. Must be png or svg.");
     }
-    const careerRoadmapsDir = path.resolve(process.cwd(), "../career_roadmaps");
+    const careerRoadmapsDir = path.resolve(process.cwd(), "public/career_roadmaps");
     const diagramPath = path.join(careerRoadmapsDir, careerPath, "diagrams", `career_path.${format}`);
     if (!fs.existsSync(diagramPath)) {
       throw new Error(`Diagram file not found: ${diagramPath}`);
