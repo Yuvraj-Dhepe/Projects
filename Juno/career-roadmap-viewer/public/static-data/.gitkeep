@@ -1,0 +1,2 @@
+# This file ensures the static-data directory is included in Git
+# Static data will be generated during the build process

@@ -1,0 +1,121 @@
+---
+config:
+  theme: neo
+id: f402b690-9637-4328-94dc-bab6d121cc1a
+---
+graph TD
+    classDef phase1 fill:#d4f1f9,stroke:#333,stroke-width:1px
+    classDef phase2 fill:#75c6ef,stroke:#333,stroke-width:1px
+    classDef phase3 fill:#5d9cec,stroke:#333,stroke-width:1px
+    classDef phase4 fill:#4a89dc,stroke:#333,stroke-width:1px
+    classDef army fill:#c8e6c9,stroke:#333,stroke-width:1px
+    classDef navy fill:#bbdefb,stroke:#333,stroke-width:1px
+    classDef airforce fill:#d1c4e9,stroke:#333,stroke-width:1px
+    classDef agniveer fill:#ffecb3,stroke:#333,stroke-width:1px
+    classDef milestone fill:#ff8a65,stroke:#333,stroke-width:2px,color:#000
+    
+    A[10th Grade Completion] --> B[11th & 12th Science]
+    B --> C{Choose Entry Scheme}
+    
+    C --> D[Army: Technical Entry Scheme]
+    C --> E[Navy: B.Tech Entry Scheme]
+    C --> F[Air Force: Airmen Selection]
+    C --> G[Agniveer Entry]
+    
+    D --> H[SSB Interview]
+    E --> H
+    F --> I[Online Test & Physical Fitness]
+    G --> J[Written Exam & Physical Fitness]
+    
+    H --> K[Training: 1-5 years]
+    I --> K
+    J --> K
+    
+    K --> L[Active Service]
+    L --> M[Career Progression]
+    
+    subgraph "Phase 1: Preparation (2 years)"
+        B
+        B1[Focus on PCM Subjects]
+        B2[Physical Fitness]
+        B3[NCC Participation]
+        B4[Leadership Development]
+        B --> B1
+        B --> B2
+        B --> B3
+        B --> B4
+    end
+    
+    subgraph "Phase 2: Entry Routes"
+        C
+        D
+        E
+        F
+        G
+        
+        D1[70% in PCM<br>Age: 16.5-19.5 yrs]
+        E1[70% in PCM<br>Age: 16.5-19.5 yrs]
+        F1[50% in 12th<br>Age: 17-21 yrs]
+        G1[12th Pass<br>Age: 17.5-21 yrs]
+        
+        D --> D1
+        E --> E1
+        F --> F1
+        G --> G1
+    end
+    
+    subgraph "Phase 3: Selection Process"
+        H
+        I
+        J
+        
+        H1[Screening Test]
+        H2[Psychological Tests]
+        H3[GTO Tasks]
+        H4[Personal Interview]
+        H5[Medical Examination]
+        
+        H --> H1
+        H1 --> H2
+        H2 --> H3
+        H3 --> H4
+        H4 --> H5
+    end
+    
+    subgraph "Phase 4: Service & Career"
+        K
+        L
+        M
+        
+        K1[Basic Military Training]
+        K2[Technical Training]
+        K3[Leadership Development]
+        
+        K --> K1
+        K1 --> K2
+        K2 --> K3
+        
+        M1[Regular Promotions]
+        M2[Specialized Courses]
+        M3[Higher Education]
+        M4[Retirement Benefits]
+        
+        M --> M1
+        M --> M2
+        M --> M3
+        M --> M4
+    end
+    
+    MS1[Milestone: 12th Completion] -.-> C
+    MS2[Milestone: Selection] -.-> K
+    MS3[Milestone: Commission/Posting] -.-> L
+    
+    class A,B,B1,B2,B3,B4 phase1
+    class C,D,E,F,G,D1,E1,F1,G1 phase2
+    class H,I,J,H1,H2,H3,H4,H5 phase3
+    class K,L,M,K1,K2,K3,M1,M2,M3,M4 phase4
+    class D,D1 army
+    class E,E1 navy
+    class F,F1 airforce
+    class G,G1 agniveer
+    class MS1,MS2,MS3 milestone

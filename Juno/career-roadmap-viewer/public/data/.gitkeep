@@ -1,0 +1,2 @@
+# This file ensures the data directory is included in Git
+# Career path data will be copied here during the build process

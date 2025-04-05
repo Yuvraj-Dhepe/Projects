@@ -1,0 +1,4 @@
+# Vercel ignore file
+# Explicitly DO NOT ignore these directories
+!public/career_roadmaps
+!public/career_roadmaps/**

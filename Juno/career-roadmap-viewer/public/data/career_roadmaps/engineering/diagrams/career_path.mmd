@@ -1,0 +1,74 @@
+graph TD
+    classDef phase1 fill:#f9d5e5,stroke:#333,stroke-width:1px
+    classDef phase2 fill:#eeac99,stroke:#333,stroke-width:1px
+    classDef phase3 fill:#e06377,stroke:#333,stroke-width:1px
+    classDef phase4 fill:#5b9aa0,stroke:#333,stroke-width:1px
+    classDef phase5 fill:#d6eadf,stroke:#333,stroke-width:1px
+    classDef milestone fill:#f6b26b,stroke:#333,stroke-width:2px,color:#000
+    
+    A[10th Grade Completion] --> B[11th & 12th Science]
+    B --> C{MHT-CET Exam}
+    C --> D[Engineering Admission]
+    D --> E[4-Year B.Tech/B.E. Degree]
+    E --> F[Campus Placements]
+    E --> G[Higher Studies]
+    E --> H[Government Jobs]
+    E --> I[Entrepreneurship]
+    
+    subgraph "Phase 1: Preparation (2 years)"
+        B
+        B1[Focus on PCM Subjects]
+        B2[Board Exam Preparation]
+        B3[MHT-CET Coaching]
+        B4[Practice Tests]
+        B --> B1
+        B --> B2
+        B --> B3
+        B --> B4
+    end
+    
+    subgraph "Phase 2: Entrance & Admission"
+        C
+        D
+        D1[CAP Registration]
+        D2[Document Verification]
+        D3[College Preference Filling]
+        D4[Seat Allotment]
+        D5[Fee Payment]
+        D --> D1
+        D --> D2
+        D --> D3
+        D --> D4
+        D --> D5
+    end
+    
+    subgraph "Phase 3: Engineering Degree (4 years)"
+        E
+        E1[Year 1: Foundation]
+        E2[Year 2: Core Subjects]
+        E3[Year 3: Specialization]
+        E4[Year 4: Projects & Placements]
+        E5[Internships]
+        E --> E1
+        E1 --> E2
+        E2 --> E3
+        E3 --> E4
+        E --> E5
+    end
+    
+    subgraph "Phase 4: Career Options"
+        F
+        G
+        H
+        I
+    end
+    
+    M1[Milestone: 12th Completion] -.-> C
+    M2[Milestone: College Admission] -.-> E
+    M3[Milestone: Graduation] -.-> F
+    
+    class A,B phase1
+    class C,D,D1,D2,D3,D4,D5 phase2
+    class E,E1,E2,E3,E4,E5 phase3
+    class F,G,H,I phase4
+    class M1,M2,M3 milestone

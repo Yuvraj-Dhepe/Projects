@@ -1,0 +1,38 @@
+[
+  {
+    "id": "air_hostess",
+    "name": "Air Hostess"
+  },
+  {
+    "id": "air_hostess_2",
+    "name": "Air Hostess 2"
+  },
+  {
+    "id": "armed_forces",
+    "name": "Armed Forces"
+  },
+  {
+    "id": "bsc_streams",
+    "name": "Bsc Streams"
+  },
+  {
+    "id": "engineering",
+    "name": "Engineering"
+  },
+  {
+    "id": "food_inspector",
+    "name": "Food Inspector"
+  },
+  {
+    "id": "isro",
+    "name": "Isro"
+  },
+  {
+    "id": "police",
+    "name": "Police"
+  },
+  {
+    "id": "teaching",
+    "name": "Teaching"
+  }
+]
