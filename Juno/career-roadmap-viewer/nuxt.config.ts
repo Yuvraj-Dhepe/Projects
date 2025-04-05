@@ -64,6 +64,12 @@ export default defineNuxtConfig({
 
   // Optimize image loading
   routeRules: {
-    '/api/diagrams/**': { cache: { maxAge: 60 * 60 * 24 } } // Cache diagrams for 24 hours
+    '/api/diagrams/**': {
+      cache: { maxAge: 60 * 60 }, // Cache diagrams for 1 hour
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Cross-Origin-Resource-Policy': 'cross-origin'
+      }
+    }
   }
 })

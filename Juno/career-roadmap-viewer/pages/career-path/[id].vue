@@ -186,10 +186,11 @@
 
             <!-- Download button -->
             <a
-              :href="`/api/diagrams/${careerPathId}?format=png`"
-              download
-              class="absolute top-2 right-2 bg-secondary text-white p-2 rounded-full shadow-md hover:bg-secondary/80 transition-colors duration-200"
+              :href="`/api/diagrams/${careerPathId}?format=png&download=true&t=${Date.now()}`"
+              class="absolute top-2 right-2 bg-primary text-white p-2 rounded-full shadow-md hover:bg-primary/80 transition-colors duration-200"
               title="Download Diagram"
+              target="_blank"
+              rel="noopener"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
