@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "build": "DEBUG_MODE=true node scripts/ensure-data-files.js && nuxt build",
+    "dev": "DEBUG_MODE=true node scripts/ensure-data-files.js && nuxt dev",
+    "generate": "DEBUG_MODE=true node scripts/ensure-data-files.js && nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "ensure-data": "DEBUG_MODE=true node scripts/ensure-data-files.js",
+    "vercel-build": "DEBUG_MODE=true node scripts/ensure-data-files.js && nuxt build"
   },
   "dependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.2",

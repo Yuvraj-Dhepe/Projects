@@ -4,10 +4,6 @@
     "name": "Air Hostess"
   },
   {
-    "id": "air_hostess_2",
-    "name": "Air Hostess 2"
-  },
-  {
     "id": "armed_forces",
     "name": "Armed Forces"
   },
@@ -34,5 +30,9 @@
   {
     "id": "teaching",
     "name": "Teaching"
+  },
+  {
+    "id": "test",
+    "name": "Test"
   }
 ]

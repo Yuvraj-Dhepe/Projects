@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": ".output",
   "github": {
     "silent": true
@@ -23,6 +23,42 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=86400"
+        }
+      ]
+    },
+    {
+      "source": "/static-data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=86400"
+        }
+      ]
+    },
+    {
+      "source": "/career_roadmaps/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=86400"
+        }
+      ]
     }
+  ],
+  "rewrites": [
+    { "source": "/data/career-paths.json", "destination": "/api/data/career-paths" },
+    { "source": "/api/diagrams/:path", "destination": "/api/diagrams/:path" },
+    { "source": "/api/diagrams/:path", "destination": "/api/static-diagrams/:path", "has": [{ "type": "header", "key": "x-vercel-fallback", "value": "1" }] },
+    { "source": "/api/diagrams/:path", "destination": "/api/hardcoded-diagrams/:path", "has": [{ "type": "header", "key": "x-vercel-fallback", "value": "2" }] },
+    { "source": "/api/career-paths/:id/info", "destination": "/api/career-paths/:id/info" },
+    { "source": "/api/career-paths/:id/info", "destination": "/api/static-career-paths/:id", "has": [{ "type": "header", "key": "x-vercel-fallback", "value": "1" }] },
+    { "source": "/api/mermaid-code/:path", "destination": "/api/mermaid-code/:path" }
   ]
 }

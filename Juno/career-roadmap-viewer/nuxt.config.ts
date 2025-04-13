@@ -35,12 +35,23 @@ export default defineNuxtConfig({
       baseUrl: process.env.BASE_URL || 'http://localhost:3000'
     },
     // Server-side environment variables
-    debugMode: process.env.DEBUG_MODE || 'false'
+    // Enable debug mode in Vercel preview and development environments
+    debugMode: process.env.DEBUG_MODE ||
+      (process.env.VERCEL_ENV === 'preview' || process.env.VERCEL_ENV === 'development' || process.env.NODE_ENV === 'development')
+      ? 'true' : 'false'
   },
 
-  // Configure nitro server
+  // Configure Nitro
   nitro: {
     preset: 'vercel',
+    // Configure esbuild for ESM compatibility
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    },
+    // Ensure we're using ESM
+    moduleSideEffects: ['unenv/runtime/polyfill/'],
     // Enable caching for better performance
     storage: {
       cache: {

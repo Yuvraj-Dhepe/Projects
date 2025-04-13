@@ -2,3 +2,13 @@
 # Explicitly DO NOT ignore these directories
 !public/career_roadmaps
 !public/career_roadmaps/**
+!public/static-data
+!public/static-data/**
+!public/data
+!public/data/**
+!server/data
+!server/data/**
+
+# Make sure these files are included
+!scripts/vercel-prepare.js
+!scripts/ensure-data-files.js
