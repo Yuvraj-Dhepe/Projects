@@ -1,6 +1,6 @@
 /**
  * Script to ensure that all necessary data files are properly created and placed
- * in the correct locations for deployment to Vercel
+ * in the correct locations for deployment.
  */
 
 import fs from 'fs';
@@ -142,88 +142,37 @@ async function main() {
   try {
     log('Starting data files check...');
     log(`Current working directory: ${rootDir}`);
-    log(`NODE_ENV: ${process.env.NODE_ENV}`);
-    log(`VERCEL_ENV: ${process.env.VERCEL_ENV || 'not set'}`);
-
-    // Ensure the data directory exists in all necessary locations
-    const publicDataDir = path.resolve(rootDir, 'public/data');
-    const outputPublicDataDir = path.resolve(rootDir, '.output/public/data');
-    const serverDataDir = path.resolve(rootDir, 'server/data');
-
-    ensureDirectoryExists(publicDataDir);
-    ensureDirectoryExists(outputPublicDataDir);
-    ensureDirectoryExists(serverDataDir);
-
-    // Create Vercel-specific directories if needed
-    if (process.env.VERCEL_ENV) {
-      log('Running in Vercel environment, ensuring additional directories exist');
-      ensureDirectoryExists('/var/task/public/career_roadmaps');
-      ensureDirectoryExists('/var/task/public/static-data');
-      ensureDirectoryExists('/var/task/server/data/career_roadmaps');
-    }
 
     // Generate career paths data
     const careerPaths = generateCareerPathsData();
     const careerPathsJson = JSON.stringify(careerPaths, null, 2);
 
-    // Write the career paths data to all necessary locations
+    // Define paths for the data files
+    const publicDataDir = path.resolve(rootDir, 'public/data');
+    const serverDataDir = path.resolve(rootDir, 'server/data');
+    
     const publicCareerPathsFile = path.resolve(publicDataDir, 'career-paths.json');
-    const outputCareerPathsFile = path.resolve(outputPublicDataDir, 'career-paths.json');
     const serverCareerPathsFile = path.resolve(serverDataDir, 'career-paths.json');
 
+    // Ensure directories exist
+    ensureDirectoryExists(publicDataDir);
+    ensureDirectoryExists(serverDataDir);
+
+    // Write the career paths data to public and server directories
     writeFile(publicCareerPathsFile, careerPathsJson);
-    writeFile(outputCareerPathsFile, careerPathsJson);
     writeFile(serverCareerPathsFile, careerPathsJson);
 
-    // Copy the career_roadmaps directory to all necessary locations
+    // Copy the career_roadmaps directory to the server data directory
     const careerRoadmapsDir = path.resolve(rootDir, 'public/career_roadmaps');
-    const outputCareerRoadmapsDir = path.resolve(rootDir, '.output/public/career_roadmaps');
-    const serverCareerRoadmapsDir = path.resolve(rootDir, 'server/data/career_roadmaps');
-    const staticDataDir = path.resolve(rootDir, 'public/static-data');
-    const outputStaticDataDir = path.resolve(rootDir, '.output/public/static-data');
+    const serverCareerRoadmapsDir = path.resolve(serverDataDir, 'career_roadmaps');
 
     if (fs.existsSync(careerRoadmapsDir)) {
-      log('Copying career_roadmaps directory to all necessary locations...');
-
-      // Copy to output directory
-      log(`Copying to output directory: ${outputCareerRoadmapsDir}`);
-      copyDirRecursive(careerRoadmapsDir, outputCareerRoadmapsDir);
-
-      // Copy to server data directory
-      log(`Copying to server data directory: ${serverCareerRoadmapsDir}`);
+      log('Copying career_roadmaps directory to server data directory...');
       copyDirRecursive(careerRoadmapsDir, serverCareerRoadmapsDir);
-
-      // Copy to static-data directory (for Vercel deployment)
-      log(`Copying to static-data directory: ${staticDataDir}`);
-      copyDirRecursive(careerRoadmapsDir, staticDataDir);
-
-      // Copy to output static-data directory
-      log(`Copying to output static-data directory: ${outputStaticDataDir}`);
-      copyDirRecursive(careerRoadmapsDir, outputStaticDataDir);
-
-      log('Successfully copied career_roadmaps to all locations');
+      log('Successfully copied career_roadmaps to server data directory');
     } else {
       log(`Warning: Career roadmaps directory does not exist: ${careerRoadmapsDir}`);
     }
-
-    // Create a verification file in each location to confirm they exist
-    const verificationContent = `Data files check completed at ${new Date().toISOString()}\nFound ${careerPaths.length} career paths: ${careerPaths.map(p => p.id).join(', ')}`;
-
-    // Create verification files in each career_roadmaps directory
-    writeFile(path.resolve(careerRoadmapsDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(outputCareerRoadmapsDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(serverCareerRoadmapsDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(staticDataDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(outputStaticDataDir, 'verification.txt'), verificationContent);
-
-    // Create verification files in data directories
-    writeFile(path.resolve(publicDataDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(outputPublicDataDir, 'verification.txt'), verificationContent);
-    writeFile(path.resolve(serverDataDir, 'verification.txt'), verificationContent);
-
-    // Create a special verification file for Vercel
-    const vercelVerificationContent = `Vercel build verification file created at ${new Date().toISOString()}\nThis file confirms that the build process ran successfully.`;
-    writeFile(path.resolve(rootDir, 'public/vercel-build-verification.txt'), vercelVerificationContent);
 
     log('Data files check completed successfully!');
   } catch (error) {
