@@ -1,7 +1,7 @@
 ![Python version](https://img.shields.io/badge/Python%20version-3.10.10-light)
 ![Type of ML](https://img.shields.io/badge/Type%20of%20ML-Image%20Segmentation-blueviolet)
 ![License](https://img.shields.io/badge/License-Public-green)
-![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)
+[![Open In Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)]([https://www.kaggle.com/your-kaggle-link](https://www.kaggle.com/code/yuvrajdhepe/dida-task-run))
 ![Open Source Love svg1](https://img.shields.io/badge/%E2%9D%A4%EF%B8%8F-Open%20Source-pink)
 
 # [Rooftop Classification Computer Vision Project](#t1.)
