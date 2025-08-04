@@ -1,0 +1,7 @@
+RAG_CC/docs
+RAG_CC/qdrant_storage
+RAG_CC/.venv/
+RAG_CC/temp
+RAG_CC/.env
+qdrant_storage
+RAG_CC/temp

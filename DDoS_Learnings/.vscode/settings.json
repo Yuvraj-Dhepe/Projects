@@ -1,0 +1,44 @@
+{
+    // Python specific settings
+    "python.analysis.extraPaths": [
+        "./"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+        }
+    },
+    // General editor settings
+    "editor.rulers": [
+        90
+    ],
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "notebook.formatOnSave.enabled": true,
+    // File settings
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 10,
+    // Terminal settings
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.rightClickBehavior": "copyPaste",
+    // Minimap settings
+    "editor.minimap.enabled": true,
+    "editor.minimap.autohide": true,
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.showSlider": "always",
+    "editor.minimap.size": "fit",
+    "editor.minimap.scale": 1,
+    "editor.minimap.side": "right",
+    "editor.fontFamily": "SpaceMono Nerd Font,\"Consolas, 'Courier New', monospace,",
+    "editor.wordWrap": "on",
+    "editor.wordWrapColumn": 90,
+    "editor.wrappingIndent": "same",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "autoDocstring.customTemplatePath": "/home/yuvidh/work/Projects/Resources/custom_docstring.mustache",
+    "autoDocstring.generateDocstringOnEnter": true,
+    "autoDocstring.quoteStyle": "'''"
+}
