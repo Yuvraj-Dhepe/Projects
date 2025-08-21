@@ -14,6 +14,9 @@
     "editor.rulers": [
         90
     ],
+    "debug.inlineValues": "off",
+    "debugpy.showPythonInlineValues": false,
+    "editor.inlayHints.enabled": "off",
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",
     "notebook.formatOnSave.enabled": true,
@@ -26,7 +29,7 @@
     "terminal.integrated.rightClickBehavior": "copyPaste",
     // Minimap settings
     "editor.minimap.enabled": true,
-    "editor.minimap.autohide": true,
+    "editor.minimap.autohide": "mouseover",
     "editor.minimap.renderCharacters": false,
     "editor.minimap.showSlider": "always",
     "editor.minimap.size": "fit",
@@ -40,5 +43,10 @@
     "editor.insertSpaces": true,
     "autoDocstring.customTemplatePath": "/home/yuvidh/work/Projects/Resources/custom_docstring.mustache",
     "autoDocstring.generateDocstringOnEnter": true,
-    "autoDocstring.quoteStyle": "'''"
+    "autoDocstring.quoteStyle": "'''",
+    "geminicodeassist.updateChannel": "Default",
+    "geminicodeassist.agentYoloMode": true,
+    "geminicodeassist.languages": [
+        "*"
+    ]
 }
