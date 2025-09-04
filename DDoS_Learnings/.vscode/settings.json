@@ -44,9 +44,7 @@
     "autoDocstring.customTemplatePath": "/home/yuvidh/work/Projects/Resources/custom_docstring.mustache",
     "autoDocstring.generateDocstringOnEnter": true,
     "autoDocstring.quoteStyle": "'''",
-    "geminicodeassist.updateChannel": "Default",
-    "geminicodeassist.agentYoloMode": true,
-    "geminicodeassist.languages": [
-        "*"
-    ]
+
+    // Better Comments 
+    
 }
