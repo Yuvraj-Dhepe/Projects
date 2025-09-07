@@ -126,7 +126,35 @@ def _(mo):
     - For multiple user's we can have multiple embedding averages.
     - For unlocking a new pic is taken and it's embedding's distance is calculated to the stored users embedding averages. If the distance is above a threshold, for any user, we unlock the phone, else we keep it locked.
 
-    A simple siamese network implementation could be found in [siamese_network_notebook](./con)
+    A simple siamese network implementation could be found in [siamese_network_notebook](./01_contrastive_learning_siamese_network_implementation.py)
+    """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    #### CLIP Model Similarities to Siamese Network
+    - In siamese network, we used a neural net that embedded it's input to a common vector space. The neural net was trained using contrastive loss which helped the network to increase or decrease their embedding distance, depending on their similarity pair label.
+
+    - Like Siamese Network, a Clip model takes this approach a step further, by using 2 distinct encoders:
+        - One for text and
+        - Another for images
+
+    - Each encoder maps their respective modalities (text and image) into a shared (as during training we use contrastive loss (common space) that tries to increase/decrease distance between text and image embeddings) multi-modal embedding space.
+
+    - Having a shared multi-modal embedding space, enables **cross modal comparison**, where a text can be compared to an image or vice-versa.
+
+    - **This cross-modal comparison** helps us to evaluate their semantic similarity, which is a key-component of a multi-modal RAG system.
+
+    - With clip modal we can perform the following cross-modal tasks:
+        - Retrieving relevant images from text: `Text to Image`
+        - Retrieving relevant images from image: `Image to Image`
+        - Zero Shot Image captioning
+
+    - The implementation of CLIP use can be found in: [CLIP_NB](./02_clip_demo.py)
     """
     )
     return
@@ -138,20 +166,32 @@ def _(mo):
         r"""
     ###  Multimodal Prompting
     - Beyond text based prompting, the input combines text, images and more.
-    - Understand how is this done in a typical RAG system
+    - Multi-modal prompting allows us to combine text with other modalities:
+        - Images: Provide visual context or ask questions about visual content
+        - Tabls: Supply structured data for reasoning
+        - Audio or Video: Enable dynamic, context-aware queries based on audio-visual inputs
+
+    - The simple implementation highlighting this prompting is present in [multi-modal prompting nb](./03_multimodal_prompting_and_tool_call.py)
     """
     )
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         r"""
     ### Tool Calling
     - Enhance the capabilities of the RAG system dynamically calling external tools or APIs when **required**
+    - The simple implementation of tool call is present in [multi-modal prompting nb](./03_multimodal_prompting_and_tool_call.py)
     """
     )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""# Summary""")
     return
 
 
