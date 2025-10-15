@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.15.1"
+__generated_with = "0.16.5"
 app = marimo.App(width="medium")
 
 
@@ -168,7 +168,7 @@ def _(mo):
     - However, sometimes the context required to answer an user-query might not be locally available, in form of files/image etc.
         - For example fetching real-time temperature in a hotel and based on the temperature recommending drinks to users.
         - For such type of tasks, the LLM should know when, it needs some real-time information and via what mediums can it get it.
-        - These real-time mediums/edendpoints, which basically add context to the LLM Model, beyond their built-in capabilities are called tools.
+        - These real-time mediums/endpoints, which basically add context to the LLM Model, beyond their built-in capabilities are called tools.
 
     - Such a system with external tools go through the following steps:
         - Recognize whether a task requires external assistance
@@ -201,7 +201,7 @@ def _(Conversation, get_stock_price, utils):
 
 @app.cell
 def _(stock_response):
-    stock_response# Notice that the message key in the above response object includes tool_calls along with the argument.
+    stock_response  # Notice that the message key in the above response object includes tool_calls along with the argument.
     return
 
 
