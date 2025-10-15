@@ -22,7 +22,7 @@ def _(mo):
        - Retrieve relevant data: Query the vector database to retrieve the most relevant information based on a multimodal input.
        - Generate responses: Combine retrieved data to genrate coherent and context-aware responses using an LLM.
 
-    - Basically the query will be text, we will retrieve relevant text for this query by using vector embeddings, along with the relevant text we will also retrieve the relevant multi-modal data, and use modal's image understanding to generate a relevant response for the user query by making use of both the image data and the retrieved text. 
+    - Basically the query will be text, we will retrieve relevant text for this query by using vector embeddings, along with the relevant text we will also retrieve the relevant multi-modal data, and use modal's image understanding to generate a relevant response for the user query by making use of both the image data and the retrieved text.
     """
     )
     return

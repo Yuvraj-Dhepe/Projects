@@ -9,7 +9,7 @@ dependencies = [
     "einops==0.8.1",
     "google-genai==1.42.0",
     "ipykernel==6.30.1",
-    "ipython>=9.6.0",
+    "ipython==9.6.0",
     "langchain-ollama==0.3.10",
     "llama-index==0.14.4",
     "llama-index-embeddings-fastembed==0.5.0",
@@ -36,7 +36,7 @@ dependencies = [
     "unstructured==0.18.15",
     "unstructured-inference==1.0.5",
     "unstructured-pytesseract==0.3.15",
-    "yfinance>=0.2.66",
+    "yfinance==0.2.66",
 ]
 [tool.uv.sources]
 raggie = {path = "src/raggie"}
