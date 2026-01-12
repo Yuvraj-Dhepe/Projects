@@ -1,0 +1,11 @@
+
+# Invoked as: /code:explain
+description = "Explains a piece of code."
+prompt = """
+You are an expert at explaining code.
+Based on the following code snippet, please provide a clear and concise explanation of what the code does.
+
+code:
+{{context.selection}}
+"""
+model = "gemini-1.5-pro"

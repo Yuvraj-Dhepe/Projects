@@ -51,11 +51,28 @@ def _(mo):
 @app.cell
 def _():
     from glob import glob
-    from raggie import utils
     import random
-    import PIL
-    # from Ipython import display
-    return PIL, glob, random, utils
+    from PIL import Image
+    from IPython.display import display
+    from fastembed import TextEmbedding, ImageEmbedding 
+    from raggie import vecdb, retriever, utils,raggy
+    import numpy as np 
+    return (
+        Image,
+        ImageEmbedding,
+        TextEmbedding,
+        display,
+        glob,
+        np,
+        random,
+        utils,
+    )
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""### Dataset Preparation""")
+    return
 
 
 @app.cell
@@ -92,15 +109,83 @@ def _(documents):
 
 
 @app.cell
-def _(PIL, display, documents, random, utils):
+def _(Image, display, documents, random, utils):
     num = random.randint(0, len(documents) - 1)
     utils.pretty_print(documents[num]["text"])
-    display(PIL.Image.open(documents[num]["image"]))
+    display(Image.open(documents[num]["image"]))
     return
 
 
 @app.cell
-def _():
+def _(mo):
+    mo.md(r"""### Embed Dataset""")
+    return
+
+
+@app.cell
+def _(ImageEmbedding, TextEmbedding):
+    class EmbedData:
+        def __init__(self, 
+                    documents, 
+                    text_model_name = 'Qdrant/clip-ViT-B-32-text',
+                    image_model_name = "Qdrant/clip-ViT-B-32-vision"):
+            # Initialize text embedding model 
+            self.documents = documents 
+            self.text_model = TextEmbedding(model_name = text_model_name)
+            self.text_embed_dim = self.text_model._get_model_description(text_model_name).dim
+
+            # Initialize image embedding model
+            self.image_model = ImageEmbedding(model_name = image_model_name)
+            self.image_embed_dim = self.image_model._get_model_description(image_model_name).dim
+
+        def embed_texts(self, texts):
+            text_embeddings = list(self.text_model.embed(texts))
+            return text_embeddings
+
+        def embed_images(self, images):
+            image_embeddings = list(self.image_model.embed(images))
+            return image_embeddings
+    return (EmbedData,)
+
+
+@app.cell
+def _(EmbedData, documents):
+    embeddata = EmbedData(documents)
+    embeddata.text_embeds = embeddata.embed_texts([doc['text'] for doc in documents])
+    embeddata.image_embeds = embeddata.embed_images([doc['image'] for doc in documents])
+    return (embeddata,)
+
+
+@app.cell
+def _(embeddata, np):
+    np.array(embeddata.text_embeds)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(
+        r"""
+    - Change the vecdb `create_collection` implementation so that it can now embed the images and text both.
+    - Add upload embeddings function to vecdb, that will take in the embeddata object. 
+    - Need to change the retriever implementation & raggy implementation to accomodate the above changes too. 
+    """
+    )
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(
+        r"""
+    ## Summary 
+    To build a rag system, the following components are always required:
+    - Embedding Component: The one that will play with the embedding model and yield data embeddings.
+    - VecDB Component: The one that will use the embedding instance to generate and store the vector embeddings in as efficient manner as possible. 
+    - Retriever Component: This component will use the vec db component to retrieve the embeddings based on the query embedding. 
+    - RAG unifier component: This component brings together the above components to build the whole system and integrate the LLM (Multimodal/Modal) to generate responses for user queries, for the context retrieved by the mentioned components.
+    """
+    )
     return
 
 

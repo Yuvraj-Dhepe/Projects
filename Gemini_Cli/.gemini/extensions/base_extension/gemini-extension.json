@@ -1,0 +1,29 @@
+{
+    "name": "base_extension",
+    "version": "0.1.0",
+    "description": "Make the basic mcp servers accessible to LLM. ",
+    "mcpServers": {
+        
+        "context7": {
+        "httpUrl": "https://mcp.context7.com/mcp",
+        "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+    }
+    },
+        "firecrawl-mcp": {
+        "command": "npx",
+        "args": ["-y", "firecrawl-mcp"],
+        "env": {
+            "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+        }
+        }
+    },
+        "browser-use": {
+        "command": "uvx",
+        "args": ["browser-use[cli]", "--mcp"],
+        "env": {
+            "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
+        }
+    },
+    "contextFileName": "GEMINI.md"
+}

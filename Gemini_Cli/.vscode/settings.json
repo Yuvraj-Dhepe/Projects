@@ -1,0 +1,18 @@
+{
+  "editor.tabSize": 4,
+  "editor.defaultFormatter": "charliermarsh.ruff",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll":"always",
+    "source.organizeImports":"always",
+  },
+  "editor.rulers": [
+    78
+  ],
+  "editor.renderWhitespace":"selection",
+  "editor.minimap.autohide": "mouseover",
+  "editor.minimap.scale": 3,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 100
+
+}

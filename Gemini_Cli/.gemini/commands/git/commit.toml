@@ -1,0 +1,12 @@
+
+# Invoked as: /git:commit
+description = "Generates a git commit message based on the current diff."
+prompt = """
+You are an expert at writing git commit messages.
+Based on the following diff, please generate a concise and informative commit message.
+The commit message should follow the conventional commit format.
+
+diff:
+{{context.git_diff}}
+"""
+model = "gemini-1.5-pro"

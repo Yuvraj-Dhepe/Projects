@@ -1,0 +1,21 @@
+description = "Update the Git-MCP server for a GitHub repository dynamically based on its URL."
+prompt = """
+You are setting up an MCP server for a GitHub repository provided by the user.
+
+User input: {{args}}
+
+### Steps:
+1. Extract `{owner}` and `{repo}` from the GitHub URL (example: https://github.com/owner/repo).
+2. Build the MCP URL: `https://gitmcp.io/{owner}/{repo}`.
+3. Update the `gemini-extension.json` file for the `gitmcp` extension to include:
+   ```json
+   "mcpServers": {
+       "gitmcp": {
+           "url": "https://gitmcp.io/{owner}/{repo}",
+           "disabled": false,
+           "autoApprove": []
+       }
+   }
+    ````
+4. Use the `write_file` tool to update the extension file at `~/.gemini/extensions/gitmcp/gemini-extension.json`.
+5. Do not overwrite other keys in the JSON; merge intelligently.
