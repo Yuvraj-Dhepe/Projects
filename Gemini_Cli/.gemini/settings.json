@@ -1,0 +1,29 @@
+{
+    "theme": "Atom One",
+    "sandbox": "docker",
+    "fileFiltering": {
+    "respectGitIgnore": true
+    // "enableRecursiveFileSearch": false,
+    // "disableFuzzySearch": true
+    },
+    "checkpointing": { "enabled": true },
+    "usageStatisticsEnabled": true,
+    "hideTips": false,
+    "hideBanner": false,
+    "excludedProjectEnvVars": ["DEBUG", "DEBUG_MODE", "NODE_ENV"],
+    "excludeTools": ["run_shell_command(rm -rf)"]
+    // "includeDirectories": ["path/to/dir1", "~/path/to/dir2", "../path/to/dir3"],
+    // "loadMemoryFromIncludeDirectories": true
+    // "maxSessionTurns": 10,
+    // "summarizeToolOutput": {
+    //     "run_shell_command": {
+    //     "tokenBudget": 100
+    //     }
+    // },
+    // "telemetry": {
+    //     "enabled": true,
+    //     "target": "local",
+    //     "otlpEndpoint": "http://localhost:4317",
+    //     "logPrompts": true
+    // },
+}

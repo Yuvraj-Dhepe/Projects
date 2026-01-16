@@ -2,7 +2,7 @@ import re
 import tomllib
 
 # --- Load lockfile ---
-with open("RAG_CC/uv.lock", "rb") as f:
+with open("uv.lock", "rb") as f:
     lock = tomllib.load(f)
 
 # Build dict: name → version
@@ -13,7 +13,7 @@ for pkg in lock.get("package", []):
     locked_versions[name] = version
 
 # --- Update pyproject.toml lines ---
-with open("RAG_CC/pyproject.toml", encoding="utf-8") as f:
+with open("pyproject.toml", encoding="utf-8") as f:
     lines = f.readlines()
 
 updated_lines = []

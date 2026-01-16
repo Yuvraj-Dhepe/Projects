@@ -1,0 +1,25 @@
+services:
+  helicone:
+    image: helicone/helicone-all-in-one:latest
+    container_name: helicone-all-in-one
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - "3000:3000"   # Dashboard UI
+      - "8585:8585"   # API Proxy
+      - "5432:5432"   # Postgres
+      - "8123:8123"   # Clickhouse (analytics)
+      - "9000:9000"   # MinIO (S3-like storage)
+    environment:
+      NEXTAUTH_SECRET: ${HELICONE_NEXTAUTH_SECRET}
+      DATABASE_URL: "postgresql://${HELICONE_POSTGRES_USER}:${HELICONE_POSTGRES_PASSWORD}@localhost:5432/${HELICONE_POSTGRES_DB}"
+    volumes:
+      - helicone_data:/var/lib/postgresql/data
+      - helicone_clickhouse:/var/lib/clickhouse
+      - helicone_minio:/data
+
+volumes:
+  helicone_data:
+  helicone_clickhouse:
+  helicone_minio:
