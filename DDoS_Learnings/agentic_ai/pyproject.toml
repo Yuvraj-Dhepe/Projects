@@ -5,12 +5,18 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "agno>=2.3.26",
+    "ipykernel>=7.1.0",
     "langchain>=1.2.3",
     "langchain-openai>=1.1.7",
+    "langfuse>=3.12.0",
     "langgraph>=1.0.5",
     "marimo>=0.19.2",
+    "openai>=2.15.0",
     "python-dotenv>=1.2.1",
     "python-lsp-server>=1.14.0",
     "ruff>=0.14.11",
+    "sqlalchemy>=2.0.45",
     "ty>=0.0.11",
+    "uuid-utils>=0.9.0",
 ]

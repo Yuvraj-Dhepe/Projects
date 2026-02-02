@@ -35,7 +35,7 @@
     "editor.minimap.size": "fit",
     "editor.minimap.scale": 1,
     "editor.minimap.side": "right",
-    "editor.fontFamily": "SpaceMono Nerd Font,\"Consolas, 'Courier New', monospace,",
+    "editor.fontFamily": "'monospace', monospace",
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 90,
     "editor.wrappingIndent": "same",
@@ -44,7 +44,5 @@
     "autoDocstring.customTemplatePath": "/home/yuvidh/work/Projects/Resources/custom_docstring.mustache",
     "autoDocstring.generateDocstringOnEnter": true,
     "autoDocstring.quoteStyle": "'''",
-
     // Better Comments 
-    
 }

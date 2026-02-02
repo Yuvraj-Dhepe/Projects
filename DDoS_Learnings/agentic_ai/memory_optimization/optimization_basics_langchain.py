@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "marimo>=0.19.0",
+#     "pyzmq",
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.19.2"
@@ -12,16 +20,12 @@ def _():
 
 @app.cell
 def _():
-    import os 
-    from dotenv import load_dotenv 
+    import os
+
+    from dotenv import load_dotenv
+
     load_dotenv()
     return (os,)
-
-
-@app.cell
-def _(os):
-    print(os.getenv("OPENROUTER_API_KEY"))
-    return
 
 
 @app.cell
@@ -45,6 +49,7 @@ def _(mo):
 @app.cell
 def _():
     from typing_extensions import TypedDict
+
 
     class CounterState(TypedDict):
         count: int
@@ -91,7 +96,7 @@ def _(mo):
 
 @app.cell
 def _(CounterState, increment):
-    from langgraph.graph import StateGraph, START, END
+    from langgraph.graph import END, START, StateGraph
 
     builder = StateGraph(CounterState)
 
@@ -139,13 +144,13 @@ def _(mo):
 def _(CounterState, END):
     from typing import Literal
 
+
     # The should continue node, has to return node names
     def should_continue(state: CounterState) -> Literal["increment", END]:
-
-        if state["count"] < 3: # keep looping
+        if state["count"] < 3:  # keep looping
             return "increment"
 
-        return END # stop the graph
+        return END  # stop the graph
     return (should_continue,)
 
 
@@ -158,9 +163,9 @@ def _(CounterState, END, START, StateGraph, increment, should_continue):
     conditional_builder.add_edge(START, "increment")
 
     conditional_builder.add_conditional_edges(
-        "increment", # Source node of the conditional edge
-        should_continue, # routing function to invoke
-        ["increment", END] #routes to chose from based on the should continue node   
+        "increment",  # Source node of the conditional edge
+        should_continue,  # routing function to invoke
+        ["increment", END],  # routes to chose from based on the should continue node
     )
 
     conditional_graph = conditional_builder.compile()
@@ -181,14 +186,15 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(mo):
+    mo.md(r"""
     #### S1: Define a state
+    """)
     return
 
 
 @app.cell
 def _(TypedDict):
-
     class AgentState(TypedDict):
         user_input: str
         response: str
@@ -207,11 +213,17 @@ def _(mo):
 @app.cell
 def _(AgentState, os):
     from langchain_openai import ChatOpenAI
-    baseline_agent = ChatOpenAI(model = "x-ai/grok-4.1-fast",openai_api_key=os.getenv("OPENROUTER_API_KEY"),openai_api_base="https://openrouter.ai/api/v1")
 
-    # S3: Define the LLM Node, 
+    baseline_agent = ChatOpenAI(
+        model="x-ai/grok-4.1-fast",
+        openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+        openai_api_base="https://openrouter.ai/api/v1",
+    )
 
-    from langchain_core.messages import SystemMessage, HumanMessage
+    # S3: Define the LLM Node,
+
+    from langchain_core.messages import HumanMessage, SystemMessage
+
 
     def baseline_llm_node(state: AgentState) -> dict:
         messages = [
@@ -227,7 +239,6 @@ def _(AgentState, os):
 
 @app.cell
 def _(AgentState, END, START, StateGraph, baseline_llm_node):
-
     baseline_agent_builder = StateGraph(AgentState)
 
     baseline_agent_builder.add_node("llm", baseline_llm_node)
@@ -285,17 +296,21 @@ def _(mo):
 
 @app.cell
 def _(TypedDict):
-    from typing_extensions import Annotated
     from operator import add
+
     from langgraph.checkpoint.memory import InMemorySaver
+    from typing_extensions import Annotated
+
 
     class State(TypedDict):
         foo: str
         bar: Annotated[list[str], add]
 
+
     def node_a(state: State):
         # overwrite foo, append "a" to bar
         return {"foo": "a", "bar": ["a"]}
+
 
     def node_b(state: State):
         # overwrite foo, append "b" to bar
@@ -305,7 +320,6 @@ def _(TypedDict):
 
 @app.cell
 def _(END, InMemorySaver, START, State, StateGraph, node_a, node_b):
-
     cp_builder = StateGraph(State)
     cp_builder.add_node("node_a", node_a)
     cp_builder.add_node("node_b", node_b)
@@ -351,6 +365,8 @@ def _(mo):
 @app.cell
 def _(Annotated, TypedDict, add):
     from langchain_core.messages import AnyMessage
+
+
     class MessagesState(TypedDict):
         messages: Annotated[list[AnyMessage], add]
     return (MessagesState,)
@@ -359,12 +375,10 @@ def _(Annotated, TypedDict, add):
 @app.cell
 def _(MessagesState, SystemMessage, baseline_agent):
     def chat_llm_node(state: MessagesState):
-        history = [
-            SystemMessage(content="You are a customer support assistant.")
-        ]
+        history = [SystemMessage(content="You are a customer support assistant.")]
         history.extend(state["messages"])
 
-        reply = baseline_agent.invoke(history)       
+        reply = baseline_agent.invoke(history)
 
         return {"messages": [reply]}
     return (chat_llm_node,)
@@ -387,9 +401,10 @@ def _(END, InMemorySaver, MessagesState, START, StateGraph, chat_llm_node):
 def _():
     import uuid_utils as uuid
 
+
     def generate_uuid():
         return uuid.uuid7()
-    return (generate_uuid,)
+    return generate_uuid, uuid
 
 
 @app.cell
@@ -402,7 +417,13 @@ def _(generate_uuid):
 @app.cell
 def _(HumanMessage, mem1_config, mem1_graph):
     # Turn 1
-    mem1_state1 = {"messages": [HumanMessage(content="What is GIL in python?")]}
+    mem1_state1 = {
+        "messages": [
+            HumanMessage(
+                content="What is GIL in python? Explain in 3 brief sentences only."
+            )
+        ]
+    }
     mem1_result1 = mem1_graph.invoke(mem1_state1, config=mem1_config)
 
     for m in mem1_result1["messages"]:
@@ -413,8 +434,12 @@ def _(HumanMessage, mem1_config, mem1_graph):
 @app.cell
 def _(HumanMessage, mem1_config, mem1_graph):
     # Turn 2
-    mem1_state2 = {"messages": [HumanMessage(content="Summarise it in two lines")],}
-    mem1_result2 = mem1_graph.invoke(mem1_state2, config=mem1_config) # We are using same config and same graph
+    mem1_state2 = {
+        "messages": [HumanMessage(content="Summarise it in 1 line")],
+    }
+    mem1_result2 = mem1_graph.invoke(
+        mem1_state2, config=mem1_config
+    )  # We are using same config and same graph
 
     for mem1_r2 in mem1_result2["messages"][-2:]:
         print(type(mem1_r2).__name__, ":", mem1_r2.content)
@@ -437,8 +462,44 @@ def _(mem1_config, mem1_graph):
 
     # full history
     mem1_history = list(mem1_graph.get_state_history(mem1_config))
-    for mem1_snap in mem1_history:
-        print(mem1_snap.created_at, mem1_snap.values)
+    for mem1_iter, mem1_snap in enumerate(mem1_history[::-1]):
+        print(f"\nCheckpoint {mem1_iter}:")
+        print("  created_at:", mem1_snap.created_at)
+        print("  node:", mem1_snap.metadata)
+        print("  values:", mem1_snap.values)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ### Long Term Memory
+    - Long term memories are stored in stores.
+    - Stores survive across sessions.
+    - Stores are distinguised via namespaces. A namespace acts like a folder or a label that groups related memory items together.
+    """)
+    return
+
+
+@app.cell
+def _(generate_uuid, uuid):
+    from langgraph.store.memory import InMemoryStore
+
+    lt_store = InMemoryStore()
+
+    lt_uid = generate_uuid()
+    lt_ns = (str(lt_uid), "memories")
+
+    lt_memory_id = str(uuid.uuid4())
+    lt_memory = {"food_preference": "I like pizza"}
+    lt_store.put(lt_ns, lt_memory_id, lt_memory)
+
+    lt_memories = lt_store.search(lt_ns)
+    lt_latest = lt_memories[-1].dict()
+    print(lt_latest["value"])
+
+    # Output
+    # {'food_preference': 'I like pizza'}
     return
 
 
