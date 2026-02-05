@@ -4,7 +4,7 @@
 
 - Introduction to types of language models
 - Generative AI through a probabilistic lens
-- How diffusion models work for image generation
+- How diffusion models work for image generationck
 - Motivation behind language diffusion models
 - Benefits and trade-offs
 - Extra notes (practical LLM usage)
