@@ -54,44 +54,40 @@ Once we have our curated dataset, we would start processing this dataset. This i
 
 
 ### Pre-processing of dataset
-- 
+The first bit of preprocessing the dataset is Tokenization. Computer don't understand words / text, but only numbers.
+This process of converting text to numbers, understood by Language models is called as Tokenization. 
+
+Following are the Ideas that form the basis of Tokenization:
+- Word based Tokenization:
+    - English Vocabulary has roughly 600,000 unique words
+    - So encoding them to numbers at a given point of time and feeding to LM's will not be easy.
+        - This perspective comes from Deep Learning basically, where i/p size always corresponds to the model parameters in one way or the other. 
+    - Also there will be redundnacy for example in word kitten and cat are similar, token and tokenization are also very similar. 
 
 
+- Character Level Tokenization: 
+    - English language has 26 ideal characters ignoring the punctuations. 
+    - However, if we think of encoding millions and billions of just character encodings, just to maintain, the language modelling computations will explode, so we even drop this idea. 
 
-- Once we have selected what domain specific data we have to use to create a specialized small model for a domain, we need to define the model architecture that will learn from this data to ideally output coherent language, having similar patterns to the input data. 
-    > IMG: Add the image of Blocks of Transformer. 
-
-- There are 3 main blocks in the Model Architecture: 
-    - Input Block: This block processes the data before feeding it to the model.
-    - Processing Block: The essential part which learns the form and meaning from the dataset.
-    - Output Block: This block serves the purpose of doing inference/predictions and penalizing the model via loss function.
+- Sub-Word Tokenization: 
+    - We choose the middle ground, which is also known as sub-word tokenization. In here we traverse through all characters one by one across all the text, and then those charactes that occur very frequently are coupled. 
+    - This gives us neither full words nor simple characters, something in between thus it's called sub-word tokenization. 
+    - One popular algorithm of tokenization used by many researchers from LM space is Byte-Pair Encoding. We can visualize this in the below code snippet. 
 
 
+- Essentially after tokenization the whole chunk of text brokes down to tokens. For simplicity let's consider each word as a token itself, this will ease out the explanations and keep things fairly simple. 
 
-## Input Block:
-- Input block is responsible for the data processing, before it get's feeded to the Transformer block. 
-- For large language models (LLMs), we have terrabytes of data of text used in the training process, however for a small language model training process, we rarely need that amount of data. 
-- For SLMs we need focused data, i.e. related to one specific thing, this allows the model to be really good at doing one thing.
-- Following processes occur in the Input block: 
-    - Tokenization: Going from big blobs of text to a unit of text easy to work with
-    - I/P and O/P pairs generation: Here we will know, why the LMs are self-supervised training, why they are called auto-regressive, what do we mean by context size of models and how is it used to process data
-    - 
+Eg. `One day a little girl` has 5 words in total. After tokenization, we end up with tokens and their id's. These Id's are nothing but simplest numerical representation for the `x_n_t collected` tokens by the tokenization algorithm.
 
-Following proces
+Now any token of the whole text space is associated with it's IDs. 
+- `one day a little girl` $\frac{tokenization}{\rightarrow}$ [1,3,11,27]
 
-### Tokenization
+However, if we think, then the `TiDs` don't capture any meaning about the sentence or for that matter word itself. 11 has no contextual value of girl, it's simply a number. To tackle this problem itself researches in machine learning space use embeddings. 
 
-- Computer don't understand words / text, but only numbers.
-- Ideas to that could be:
-    - **Word based Tokenization**
-    - **Character based Tokenization** $\rightarrow$ every single letter.
+- Think of embeddings as nothing but a higher dimensional space, where we will find more meaning about wrt any item. So basically mathematically if the properties/ features of a substance are represented, they are it's dimensions. The higher the dimensions, the more qualitative/richer the substance is. This richerness depends on what each dimension represent and how many dimensions we have. For us living orgs, mother Nature had filled this richness, via millions of years of evolution steps ;).
+Likewise to capture the richness of every single word, we associate them with a higher number of dimensions. These dimensions are nothing but randomly initialized numbers at the beginning of the training, which will be determined by Language Model. The more the LM learn these features/richness well. The better. 
 
-- **Character based Tokenization fails as:**
-    - Too many characters & attention mech. doesn't pay attention to all tokens.
-
-- **Word based Tokenization fails as:**
-    - If every word has token then spelling mistake words don't get mapped in the vocab space.
-    - As in Eng. there are 50K words vocab size becomes huge & that affects drastically further computations, for next token prediction.
+Once we know how to represent a tokens richly, we end up with something called as a Token Embedding Matrix. It stores embeddings for all the tokens in a vocabulary/dataset. These embeddings are tuned via the language model over time. 
 
 ---
 
@@ -151,6 +147,30 @@ Following proces
     Val.bin holds 10M tokens.
 
 - **Add Code Snip.**
+
+
+
+- Once we have selected what domain specific data we have to use to create a specialized small model for a domain, we need to define the model architecture that will learn from this data to ideally output coherent language, having similar patterns to the input data. 
+    > IMG: Add the image of Blocks of Transformer. 
+
+- There are 3 main blocks in the Model Architecture: 
+    - Input Block: This block processes the data before feeding it to the model.
+    - Processing Block: The essential part which learns the form and meaning from the dataset.
+    - Output Block: This block serves the purpose of doing inference/predictions and penalizing the model via loss function.
+
+
+
+## Input Block:
+- Input block is responsible for the data processing, before it get's feeded to the Transformer block. 
+- For large language models (LLMs), we have terrabytes of data of text used in the training process, however for a small language model training process, we rarely need that amount of data. 
+- For SLMs we need focused data, i.e. related to one specific thing, this allows the model to be really good at doing one thing.
+- Following processes occur in the Input block: 
+    - Tokenization: Going from big blobs of text to a unit of text easy to work with
+    - I/P and O/P pairs generation: Here we will know, why the LMs are self-supervised training, why they are called auto-regressive, what do we mean by context size of models and how is it used to process data
+    - 
+
+The first part of pre-processing the dataset is 
+
 
 ---
 
