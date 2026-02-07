@@ -3,6 +3,15 @@
 - Large Language Models: LLMs
 - Small Language Models: SLMs
 - Language Models: LMs
+- Context Length: CTX
+- Batch Size: BS
+- Token IDs: TIDs
+- Token Embedding Matrix: TEM
+- Position Embedding Matrix: PEM
+- Auto Regressive Models: ARMs
+
+### Writing 
+- with respect to: WRT
 
 
 ### Defs
@@ -22,3 +31,4 @@
 - RelU activation function
     - What is it
     - What is it used for
+

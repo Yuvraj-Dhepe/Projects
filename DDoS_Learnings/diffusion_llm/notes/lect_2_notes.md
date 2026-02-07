@@ -1,9 +1,9 @@
 # Understanding the Auto Regressive Models Architecture through a SLM
 ## Introduction
 Before we dive into the details of architecture, what is a small model actually? 
-- These days we see a lot of large language models (LLMs) being published by tech giant's however, these Language Models (LMs) barely are capable to be ran locally.
-- To tackle this problem, there is a niche area optimizing the model architectures so that they perform best on a specific/domain problem and produce text on that. 
-- These language models are called as Small Language Models (SLMs)
+- These days we see a lot of large language models (_LLMs_) being published by tech giant's however, these Language Models (_LMs_) barely are capable to be ran locally. Also creating one LLM requires  terabytes of data of text for training.
+- To tackle this problem, there is a niche area optimizing the model architectures so that they perform best on a specific/domain problem and produce text on that. Also they don't need huge amounts of data but niche curated dataset for a specific task.
+- These language models are called as Small Language Models (_SLMs_)
 
 However the amount of params a SLM should have to call it small is a bit blurry. For contextual/blog purpose let's say any model having params less than 1B is a SLM.
 
@@ -16,25 +16,25 @@ However the amount of params a SLM should have to call it small is a bit blurry.
         - How data is prepared for the training purpose
         - What components the LM have, how they contribute to learning the essence of language, and what do the names of components actually come from
         - How do we calculate the loss for the training
-        - How do we pretrain the model
+        - How do we pre-train the model
         - How do we run inference via the model
 ---
 ## Contents
 1. Dataset
 2. Assembling the Model Architecture
 3. Setting up the SLM training.
-4. Pretraining the SLM
+4. Pre-training the SLM
 5. Running Inference.
 --- 
 ## Dataset
-
+    
 ### Collection of Dataset
 - For this tutorial we will work with **Tiny Stories Dataset**. It consists of stories for 3-4 yr old kids.
 - This dataset was:
     - Intelligently Curated Dataset for specific task of story generation. 
-        - Likewise, if we want to create a speciallized model we have to intelligent curate data for that task.
+        - Likewise, if we want to create a specialized model we have to intelligent curate data for that task.
 
-- With such a dataset what thoughtprocess do we have:
+- With such a dataset what thought process do we have:
     - What type of language model do we develop which learns the essence of the dataset's language.
     - Given we are doing the development of SLM, another thought goes into this process is how small can a model be to learn the language essence and produce text coherently.
 
@@ -46,7 +46,7 @@ However the amount of params a SLM should have to call it small is a bit blurry.
 
 - Now some characteristics of the dataset:
     - Tiny Stories Dataset has roughly 2M stories.
-    - We use 2M stories splitted in training and validation set.
+    - We use 2M stories split to in training and validation set.
 
 
 Once we have our curated dataset, we would start processing this dataset. This is what we dive into our next part. 
@@ -54,6 +54,7 @@ Once we have our curated dataset, we would start processing this dataset. This i
 
 
 ### Pre-processing of dataset
+#### Tokenization
 The first bit of preprocessing the dataset is Tokenization. Computer don't understand words / text, but only numbers.
 This process of converting text to numbers, understood by Language models is called as Tokenization. 
 
@@ -62,7 +63,7 @@ Following are the Ideas that form the basis of Tokenization:
     - English Vocabulary has roughly 600,000 unique words
     - So encoding them to numbers at a given point of time and feeding to LM's will not be easy.
         - This perspective comes from Deep Learning basically, where i/p size always corresponds to the model parameters in one way or the other. 
-    - Also there will be redundnacy for example in word kitten and cat are similar, token and tokenization are also very similar. 
+    - Also there will be redundancy for example in word kitten and cat are similar, token and tokenization are also very similar. 
 
 
 - Character Level Tokenization: 
@@ -70,285 +71,234 @@ Following are the Ideas that form the basis of Tokenization:
     - However, if we think of encoding millions and billions of just character encodings, just to maintain, the language modelling computations will explode, so we even drop this idea. 
 
 - Sub-Word Tokenization: 
-    - We choose the middle ground, which is also known as sub-word tokenization. In here we traverse through all characters one by one across all the text, and then those charactes that occur very frequently are coupled. 
+    - We choose the middle ground, which is also known as sub-word tokenization. In here we traverse through all characters one by one across all the text, and then those characters that occur very frequently are coupled. 
     - This gives us neither full words nor simple characters, something in between thus it's called sub-word tokenization. 
     - One popular algorithm of tokenization used by many researchers from LM space is Byte-Pair Encoding. We can visualize this in the below code snippet. 
 
 
-- Essentially after tokenization the whole chunk of text brokes down to tokens. For simplicity let's consider each word as a token itself, this will ease out the explanations and keep things fairly simple. 
+- Essentially after tokenization the whole chunk of text broken down to tokens. For simplicity let's consider each word as a token itself, this will ease out the explanations and keep things fairly simple. 
 
-Eg. `One day a little girl` has 5 words in total. After tokenization, we end up with tokens and their id's. These Id's are nothing but simplest numerical representation for the `x_n_t collected` tokens by the tokenization algorithm.
+Eg. `One day a little girl` has 5 words in total. After tokenization, we end up with tokens and their id's. These Id's are nothing but simplest numerical representation for the tokens by the tokenization algorithm. The number of tokens collected here on will be referred to as:
+
+> Vocab Size: The unique tokens collected by the tokenizer. These tokens numerical aspect is the token id. 
 
 Now any token of the whole text space is associated with it's IDs. 
-- `one day a little girl` $\frac{tokenization}{\rightarrow}$ [1,3,11,27]
+```mermaid
+graph TD
+    A[Raw Text<br/>one day a little girl]
+    A --> B[Tokenization<br/>one, day, a, little, girl]
+    B --> C[Vocabulary Lookup<br/>one → 1<br/>day → 11<br/>a → 15<br/>little → 24]
+    C --> D[Token IDs<br/>1, 11, 15, 24]
 
-However, if we think, then the `TiDs` don't capture any meaning about the sentence or for that matter word itself. 11 has no contextual value of girl, it's simply a number. To tackle this problem itself researches in machine learning space use embeddings. 
+    style C fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
+```
 
-- Think of embeddings as nothing but a higher dimensional space, where we will find more meaning about wrt any item. So basically mathematically if the properties/ features of a substance are represented, they are it's dimensions. The higher the dimensions, the more qualitative/richer the substance is. This richerness depends on what each dimension represent and how many dimensions we have. For us living orgs, mother Nature had filled this richness, via millions of years of evolution steps ;).
-Likewise to capture the richness of every single word, we associate them with a higher number of dimensions. These dimensions are nothing but randomly initialized numbers at the beginning of the training, which will be determined by Language Model. The more the LM learn these features/richness well. The better. 
+For our dataset we have 2M Training set and 20K Validation set stories. Using the byte pair encoding tokenizer, we have a vocab size of 50257 and total tokens in the scale of 90 to 100M for training and 10M for validation.
 
-Once we know how to represent a tokens richly, we end up with something called as a Token Embedding Matrix. It stores embeddings for all the tokens in a vocabulary/dataset. These embeddings are tuned via the language model over time. 
+- We store these tokens into .bin file on disk, one for training and one for validation split. This helps us with:
+    - Fast data loading, 
+    - Avoid RAM overload, 
+    - No need to re-tokenize, 
+    - This format is easy to use.
 
----
+- One more optimization that we do during tokenization, is we collect all the tokens batch them and then store them to disk: Tokens $\rightarrow$ Batches $\rightarrow$ Stored to Disk. Batching helps us for faster writes via multiple cores. 
 
-# Page 3
-
-**Know When To Train.**
-**Date: / /**
-
-- **Middle ground is:**
-    - **Subword Tokenization:** Here we tokenize
-        a) Character ??
-        b) Words
-        c) Subwords : token izaton
-    - Cause of subwords no. of unique words don't stay that huge.
-
-    - This is optimal & we use **byte pair encoding (BPE)** algorithm that breaks huge chunk of text into tokenize i.e. subwords.
-
-    - **BPE:** Merges the commonly occurring bytes together until you reach a prescribed vocab size.
-    - See Video.
-
-- **BPE is the tokenizer in tutorial & was used by GPT 2.**
-    Dataset $\rightarrow$ Tokenizer $\rightarrow$ Tokens having a Token ID.
-
-- **2 million Training Stories.**
-  **20K Validation Stories.**
-
-- **After tokenization**
-    Story 1 $\rightarrow$ Tokenizer $\rightarrow$ ids: [1, 11, 55 ...] len 3.
-    Story n $\rightarrow$ -||- $\rightarrow$ -||-
-
-- **We store tokens into .bin file to disk to use later.**
-    - Fast data loading, - Avoids RAM overload, - No need to re-tokenize, - This format is easy to use.
-
----
-
-# Page 4
-
-**Date: / /**
-
-- **We create a .bin file & a memory mapped array.**
-    * - Use `np.memmap` means the file is backed on disk & looks like numpy array.
-      - You can write to it chunk by chunk without holding everything in RAM.
-
-- **We split each training set into batches & put it on disk.**
-    We have `<file_split_name>.bin`.
-
-    - We do batches for faster iteration.
-    - Add more reason ??
-
-    [Tokens]
-    $\downarrow$ Batch
-    [ ][ ][ ][ ] $\rightarrow$ All token ids are collected here.
-    $\downarrow$ Put to disk
-
-- **If 1 word is 1 token**
-    Then Train.bin holds 100M tokens
-    Val.bin holds 10M tokens.
-
-- **Add Code Snip.**
+**Important Code Lines**
+- `arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len,))`, refers to creating a space to store the tokens in numpy array format on disk. 
+- We first collect all the tokens and then batch them, this allows us for faster writes. This can be seen via `batch = dset.shard(num_shards=total_batches, index=batch_idx, contiguous=True).with_format('numpy')`
 
 
+## Assembling the Model Architecture
+Once we have selected what domain specific data, tokenized the data, we need to now create a specialized small model for a domain. For this we need to define the model architecture that will learn from this data to ideally output coherent language, having similar patterns to the input data. 
 
-- Once we have selected what domain specific data we have to use to create a specialized small model for a domain, we need to define the model architecture that will learn from this data to ideally output coherent language, having similar patterns to the input data. 
-    > IMG: Add the image of Blocks of Transformer. 
+> Ideally there is lot's of history in the NLP space, before the transformer block came, I will briefly introduce some history in bit's and pieces to fill in the understanding, but leave the depth to my next blog or readers own learning journey ;)
+
+Let's look at how the model architecture looks like:
+<img
+  src="https://blogs.mayankpratapsingh.in/_next/image?url=%2Fimages%2Fblog%2FBirds_Eye_View_of_LLM%2FCover.gif&w=1920&q=75"
+  alt="Birds eye view of a large language model pipeline by Mayank Pratap Singh"
+/>
+
 
 - There are 3 main blocks in the Model Architecture: 
     - Input Block: This block processes the data before feeding it to the model.
     - Processing Block: The essential part which learns the form and meaning from the dataset.
     - Output Block: This block serves the purpose of doing inference/predictions and penalizing the model via loss function.
 
+Before we dive deep into the architecture's individual components let's have a bird's eye view over the whole architecture: 
 
+Essentially, in machine learning applications we need some ground-truths from which the model has to infer okay given this input, my goal is to learn the features/patterns in the input and produce whatever output/ground truth the user has shown me during the training.
 
-## Input Block:
-- Input block is responsible for the data processing, before it get's feeded to the Transformer block. 
-- For large language models (LLMs), we have terrabytes of data of text used in the training process, however for a small language model training process, we rarely need that amount of data. 
-- For SLMs we need focused data, i.e. related to one specific thing, this allows the model to be really good at doing one thing.
+Likewise in the first input block, we figure out what will be the input to the model and what will be the output to the model, from which it can learn both the form and meaning from the huge amounts of text. We will discuss this in the input/output pair creation section. 
+
+> Not ever ML applications require ground truth, some are non-supervised i.e. without any ground truths such as clustering applications. Language modeling is a self-supervised i.e. where the ground-truth is utilized during models learning process and it comes from the i/p itself. For now just knowing that LLMs are mostly trained under self-supervision is enough. 
+
+Once we have the input and output, we pass this through the model in batches through multiple iterations, and do some mathematical operations of predictions, loss calculation by comparing how off the predictions are from the actual ground truth and based on this we update the model.
+
+The process somewhat looks like this:
+- Tokenization & Batching: Raw text is converted into integers (Tokens). These are organized into a matrix of shape [Batch Size, Sequence Length].
+- Forward Pass: The model processes the batch. For every token, it outputs a vector of "logits" (scores) for every possible word in its vocabulary.
+- Loss Calculation: Using Cross-Entropy Loss, we compare models predicted scores against ground truth i.e. the actual next token in the text.
+- Backward Pass (Back-propagation): The "error" is sent backward through the Transformer layers to determine how much each weight contributed to the mistake.
+- Gradient Clipping: The gradients are checked. If they are too "steep" (large), they are scaled down to prevent the model from becoming unstable.
+- Optimizer Update (AdamW): The optimizer adjusts the weights based on the gradients, also accounting for "momentum" from previous batches.
+- Weight Update: The parameters are updated, and the memory of the gradients is cleared for the next batch.
+- Repeat: This continues until the data is exhausted (End of Epoch).
+
+```mermaid
+graph TD
+    A[Batches of Raw Text Data] --> B[Tokenization & Embedding]
+    B --> C[Forward Pass]
+    C --> D[Calculate Cross-Entropy Loss]
+    D --> E[Backward Pass: Compute Gradients]
+    E --> F[Gradient Clipping]
+    F --> G[AdamW Optimizer Step]
+    G --> H[Update Model Parameters]
+    H --> I{End of All Batches?}
+    I -- No --> B
+    I -- Yes --> J[Epoch Complete]
+    
+    style D fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
+    style F fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
+```
+
+Now let's dive deep into each of the block.
+
+### Input Block
+In this block, we process the tokens further, before it get's fed to the Transformer block. 
+
 - Following processes occur in the Input block: 
-    - Tokenization: Going from big blobs of text to a unit of text easy to work with
-    - I/P and O/P pairs generation: Here we will know, why the LMs are self-supervised training, why they are called auto-regressive, what do we mean by context size of models and how is it used to process data
-    - 
+    - Tokenization: Going from big blobs of text to a unit of text easy to work with, which we have seen above in the pre-processing step.
+    - I/P and O/P pairs generation: We generate the ground-truth for language modelling. 
+    - Token Embeddings
+    - Position Embeddings
 
-The first part of pre-processing the dataset is 
+
+#### Input Output Pair Creation
+As we discussed earlier as Language Modelling is a Machine Learning problem, we need to have input pairs, for training a language model. 
+
+> How do we go about finding the ground truth in huge texts? Thinking from the first principles what goal we want to achieve with language models?
+
+> As we think about how humans learn to speak a language, we try to speak one word at a time, thoughtfully thinking about whether it makes sense and is inline to what we spoke before. Similar to this itself, our goal with language models is to predict the next token (instead of word) so that is is inline with the previously predicted tokens both syntactically as well as meaningfully. 
+
+As now the task is next token prediction task, the model needs to take in a sequence of tokens process it and produce the next token in that sequence. 
+
+```mermaid
+graph LR
+    A["Input Sequence<br/>Token IDs or Embeddings"]
+    B["LLM<br/>Transformer Layers"]
+    C["Next Token<br/>Probability Distribution"]
+    D["Predicted Next Token"]
+
+    A --> B
+    B --> C
+    C --> D
+    
+    style D fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
+```
 
 
+- To create these pairs we use something called as context size: 
+    - Context Length (_CTX_): Max length of tokens language models look at 1 time before predicting the next token.
+        > In our examples we use a dummy context size of 4 and a batch size of 4.
+
+For eg.  
+`One day a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp.` could be broken down as below chunks and batches. 
+
+
+<div class="mermaid">
+graph TD
+    Text["<b>Whole Text: Lily & the Needle</b> (chunk of ctx length of 4)"]
+
+    %% Sequences
+    Text --> c1["c1: One day a little"]
+    Text --> c2["c2: girl named Lily found"]
+    Text --> c3["c3: a needle in her"]
+    Text --> c4["c4: room. She knew it"]
+    Text --> c5["c5: was difficult to play"]
+    Text --> c6["c6: with it because it"]
+    Text --> c7["c7: was sharp."]
+
+    %% Batch grouping
+    subgraph Batch1["Batch 1"]
+        c1
+        c2
+        c3
+        c4
+    end
+
+    subgraph Batch2["Batch 2 "]
+        c5
+        c6
+        c7
+    end
+
+    %% Styling
+    style Text fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
+    style Batch1 fill:#F3E8C7,stroke:#B59F3B,stroke-width:2px
+    style Batch2 fill:#F3E8C7,stroke:#B59F3B,stroke-width:2px
+</div>
+
+Now once we have chunks, we break down each chunk to input and output pairs as follows: 
+
+|i/p|o/p|
+|---|---|
+|One|day|
+|One day|  a|
+|One day a|  little|
+
+So the chunk `c1` creates 3 input/output pairs. For the model we use these pairs for the training. 
+
+> To get these pairs, first we map a chunk to the chunk which just comes after skipping the first token of the chunk. 
+
+This breaking down to pairs we get by simply sliding a window over the chunks we created.  happens during training. In Matrix form it looks like this: 
+
+c1: [1, 11, 15, 24] $\rightarrow$ y1 [11, 15, 24, 11]
+c2: [11, 13, 14, 17] $\rightarrow$ y2 [13, 14, 17, 6]
+c3: [6, 8, 9, 18] $\rightarrow$ y3 [8, 9, 18, 1]
+c4: [1, 7, 6, 7] $\rightarrow$ y4 [7, 6, 7, 59]
+
+For c1 and y1 we get input output pairs by pairing the _TIDs_,: 
+    - 1 maps to 11.
+    - 1, 11 maps to 15
+    - 1, 11, 15 maps to 24
+    - 1, 11, 15, 24 maps to 11
+
+> Hence each chunk produces roughly #_CTX_ prediction tasks. So the training objective is as simple as next token prediction for each of the tasks. 
+
+As we are doing this next token prediction itself, it's similar to regression, so these models are also called as Auto Regressive Models (_ARMs_), trained via a self-supervised process because we are creating the ground truth from the input data itself.
+
+Now let's move onto the next input processing part, we need to have a better format than token Ids for token representation. 
+
+
+#### Token Embedding Creation
+If we think, then the token Ids (_TIDs_) don't capture any meaning about the sentence or for that matter word itself. 24 has no contextual value of `little`, it's simply a number. To tackle this problem itself researches in machine learning space use embeddings. 
+
+- Think of embeddings as nothing but a higher dimensional space, where we will find more meaning about with respect to any item's properties/ features. These features are also called as dimensions. The higher the dimensions, the more qualitative/richer the substance is. This richness depends on what each dimension represent and how many dimensions we have. For us living organisms, mother Nature had filled this richness, via millions of years of evolution steps ;).
+
+On the same context to capture the richness of every single word, we associate them with a higher number of dimensions. These dimensions are nothing but randomly initialized numbers, which will be determined by Language Model. The more the LM learn these features/richness well. The better. 
+
+Once we know how to represent a tokens richly, we end up with something called as a Token Embedding Matrix (_TEM_). It stores embeddings for all the tokens in a vocabulary/dataset. These embeddings are revised via the language model during the training process, to capture the essence of the word. 
+> The dimensions is vocab_size x num_embedding_dims. For our examples we use embedding dimension as `786`
+
+Token embedding matrix serves as a lookup table, initialized randomly and are trainable params for the model. 
+
+#### Position Embedding Matrix
+Once we have the TEM, we need another matrix to capture the essence of position of words in the sentence. This is done by another high dimensional feature capturing matrix called position matrix. 
+- Position Embedding Matrix (_PEM_) has same num_embedding_dims as that of TEM, just it's num_rows are equal to _CTX_
+
+One we have _TIDs_, _TEM_ and _PEM_, we use them to process each token. For every token we add their embedding vector with position vector to get an input vector. 
+
+Mathematically _TEM_ + _PEM_ yields a input embedding matrix (_IEM_). This _IEM_ is utilized by the next block of the model architecture. Let's see that next. 
 ---
 
-# Page 5
+### Processing Block
+Detailing the transformer architecture
 
-**Date: / /**
 
-### I/P, O/P Pairs Creation.
+### Output Block
+Detailing the output block of transformer architecture. 
 
-- **Loss function for training language model is based on I/P & O/P pairs.**
-    - Same like regression where we have labels.
-    - But in language modelling task there is no label so we create our own output.
-
-- **Purpose of Language Models: Next Token Prediction task.**
-    (I/P seq) $\rightarrow$ [LM] $\rightarrow$ Next token.
-    Fuel $\rightarrow$ Engine $\rightarrow$ Move Forward.
-
-    - Beauty is the LLM magically figure out form & meaning from the training.
-
-- **Language models have 2 hyperparams with other:**
-    - **Max context size:** Length of tokens language models look at 1 time before predicting next token.
-        - 4 for dummy example.
-
-    - **Divide entire data into chunks based on context size.**
-
-**Eg:** One day a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp.
-
-* When we create dataset model never looks at words but the token ids inside the chunks.
-
-    - **Batch size:** We process I/P & O/P pairs into batches. Batches helps to go through data quickly, update params more frequently.
-
----
-
-# Page 6
-
-**Date: / /**
-
-**Now we get: I/P & O/P matrices.**
-
-$x_1$ [ 1  11  15  24 ]  $\rightarrow$ Batch size = 4
-$x_2$ [ 1  13  14  17 ]  $\rightarrow$ I/P Pair i.e. Input tensor
-$x_3$ [ 6   8   9  18 ]
-$x_4$ [ 1   7   6   7 ]
-      (Context size $\rightarrow$ 4)
-
-$y_1$ [ 11  15  24  11 ]  $\rightarrow$ O/P pair i.e. Output tensor
-$y_2$ [ 13  14  17   6 ]
-$y_3$ [  8   9  18   1 ]
-$y_4$ [  7   6   7  59 ]
-
-- **Here O/P is just I/P shifted to right by 1 token.**
-
-**Eg: For here:**
-$x_1$ { One, day, a, little, girl } $\rightarrow$ I/P pair.
-$y_1$ { day, a, little, girl, named } $\rightarrow$ O/P pair.
-
-- **Now critical part is in an I/P O/P pair.**
-  There are 4 prediction Tasks.
-  I/P $\rightarrow$ Target
-  One $\rightarrow$ day
-  One day $\rightarrow$ a
-  One day a $\rightarrow$ little
-  One day a little $\rightarrow$ girl
-
----
-
-# Page 7
-
-**Date: / /**
-
-- **As this is prediction of next token the language models are also called auto regressive models.**
-- **As the label are curated automatically they are called Self Supervised Trained.**
-
-- **Summary in brief**
-    a) Dataset $\rightarrow$ Tokenize
-    b) Decide context & batch size to iterate over tokens.
-    c) Create I/P chunks by sliding window of context size over tokens.
-    d) The O/P for the I/P is another token chunk shifted to right by 1 token.
-    e) For every I/P & O/P pair we create model's I/P & pred. ground truth based on next token ideology.
-       So for n-context size the model sees n-prediction task for a single I/P $\leftrightarrow$ O/P pair.
-
-    i.e. I/P $\rightarrow$ Target for $x_1 \leftrightarrow y_1$
-    One $\rightarrow$ day
-    One day $\rightarrow$ a
-    One day a $\rightarrow$ little
-    One day a little $\rightarrow$ girl
-
-    g) The model iterates over batch size of 4 in our case all such next token prediction task over all I/P - O/P pairs for a given batch size i.e. 4 in our case.
-
-    h) The training objective is as simple as this next token prediction.
-
-- **Add Code Snippet (53:57)**
-
----
-
-# Page 8
-
-**Date: / /**
-
-### Going through processing blocks: Token Embed
-
-- I/P $x_1 = [ 1, 11, 15, 24 ]$
-                $\uparrow$  $\uparrow$  $\uparrow$  $\uparrow$
-               One day  a  little.
-
-- As language has some meaning, we need to capture this info some how.
-- For simplicity lets take "meaning" as nothing but more aspects / features of something. Think of it as:
-
-**Eg: little girl named Lily.**
-- Every single word has meaning.
-- Every single word has semantics / features.
-- Mathematically these features are represented as **embedding**.
-    $\rightarrow$ A set of numbers learnt by language model, so that it maps to form & meaning of each word.
-
-- In our case for language model we represent tokens via embeddings. The model has to figure out what these embeddings could be so it captures meaning & form for every token.
-- As devs we tune how many numbers can the model choose to represent a token.
-
----
-
-# Page 9
-
-**Date: / /**
-
-**i.e. called as embedding size.**
-
-- In our example we use **embedding size of 768**.
-- This is also necessary as simply token ids don't capture token essence / features of language.
-    Eg. Cat & Kitten even though similar could have very different token Ids.
-
-- We use an **token embedding matrix** to keep the essence / capture the essence of every individual token.
-
-| Token Ids | $\leftarrow$ 768 $\rightarrow$ | |
-| :--- | :--- | :--- |
-| 1 | [ ] | One |
-| 2 | [ ] | day |
-| : | [ ] | a |
-| 50,000 | [ ] | little |
-
-- **Token Embedding Matrix just serves as a lookup table.**
-
-- We initialize the token embedding matrix randomly. These are trainable params for the model.
-    - We have roughly `vocab size * Embed size` added to model because of TEM i.e. token embedding matrix.
-
-### Data Processors Position Embedding.
-
-- The dog chased the ball.
-- It could not catch it.
-
-- Now in the above sentence, how does the model know what is the use of 'it'. Is 'it' referencing dog or ball.
-
----
-
-# Page 10
-
-**Date: / /**
-
-- To capture this positional essence of language we use another feature representation of tokens in **position embedding matrix**.
-- For each token we maintain its positional embeddings.
-- In all now we have 2 matrices for tokens.
-
-| Tids | TEM | Context size | PEM |
-| :--- | :--- | :--- | :--- |
-| 1 | [ ][ ][ ][ ] | 1 | [ ][ ][ ][ ] |
-| 2 | -||- | 2 | -||- |
-| 3 | -||- | 3 | -||- |
-| : | : | : | : |
-| 50257 | | 1024 | |
-
-**& also the token-id mapping.**
-
-- The goal of **PEM** is to capture at which position my token comes in Input sequence.
-- Since the number of position is restricted by context size.
-- PEM has size of (1024, 768) when iterating over an I/P, O/P pair.
-
-- **Now for each token we simply add up the TEM token embedding & Positional embedding to get an Input embedding.**
-- **Add Code Snip.**
-
----
 
 # Page 11
 

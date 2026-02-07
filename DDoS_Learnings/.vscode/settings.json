@@ -33,16 +33,20 @@
     "editor.minimap.renderCharacters": false,
     "editor.minimap.showSlider": "always",
     "editor.minimap.size": "fit",
-    "editor.minimap.scale": 1,
+    "editor.minimap.scale": 3,
     "editor.minimap.side": "right",
-    "editor.fontFamily": "'monospace', monospace",
+    "editor.fontFamily": "'FiraMono Nerd Font Mono'",
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 90,
     "editor.wrappingIndent": "same",
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
-    "autoDocstring.customTemplatePath": "/home/yuvidh/work/Projects/Resources/custom_docstring.mustache",
     "autoDocstring.generateDocstringOnEnter": true,
     "autoDocstring.quoteStyle": "'''",
-    // Better Comments 
+    "autoDocstring.docstringFormat": "google",
+    // CodeSnap 
+    "codesnap.showLineNumbers": true,
+    "codesnap.shutterAction": "copy",
+    "codesnap.roundedCorners": true,
+    "codesnap.target": "window"
 }
