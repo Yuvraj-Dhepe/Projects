@@ -48,5 +48,8 @@
     "codesnap.showLineNumbers": true,
     "codesnap.shutterAction": "copy",
     "codesnap.roundedCorners": true,
-    "codesnap.target": "window"
+    "codesnap.target": "window",
+    "cSpell.words": [
+        "Sankyu"
+    ]
 }
