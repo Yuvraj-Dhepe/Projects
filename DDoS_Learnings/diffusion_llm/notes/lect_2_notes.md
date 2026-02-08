@@ -208,9 +208,8 @@ For eg.
 
 <div class="mermaid">
 graph TD
-    Text["<b>Whole Text: Lily & the Needle</b> (chunk of ctx length of 4)"]
+    Text["Whole Text\nbroken into chunks of \n4 words each"]
 
-    %% Sequences
     Text --> c1["c1: One day a little"]
     Text --> c2["c2: girl named Lily found"]
     Text --> c3["c3: a needle in her"]
@@ -219,7 +218,6 @@ graph TD
     Text --> c6["c6: with it because it"]
     Text --> c7["c7: was sharp."]
 
-    %% Batch grouping
     subgraph Batch1["Batch 1"]
         c1
         c2
@@ -227,13 +225,12 @@ graph TD
         c4
     end
 
-    subgraph Batch2["Batch 2 "]
+    subgraph Batch2["Batch 2"]
         c5
         c6
         c7
     end
 
-    %% Styling
     style Text fill:#FFBF00,stroke:#000000,stroke-width:3px,color:#000000
     style Batch1 fill:#F3E8C7,stroke:#B59F3B,stroke-width:2px
     style Batch2 fill:#F3E8C7,stroke:#B59F3B,stroke-width:2px
@@ -253,10 +250,7 @@ So the chunk `c1` creates 3 input/output pairs. For the model we use these pairs
 
 This breaking down to pairs we get by simply sliding a window over the chunks we created.  happens during training. In Matrix form it looks like this: 
 
-c1: [1, 11, 15, 24] $\rightarrow$ y1 [11, 15, 24, 11]
-c2: [11, 13, 14, 17] $\rightarrow$ y2 [13, 14, 17, 6]
-c3: [6, 8, 9, 18] $\rightarrow$ y3 [8, 9, 18, 1]
-c4: [1, 7, 6, 7] $\rightarrow$ y4 [7, 6, 7, 59]
+> IMG: I/P output pair
 
 For c1 and y1 we get input output pairs by pairing the _TIDs_,: 
     - 1 maps to 11.
@@ -279,7 +273,7 @@ If we think, then the token Ids (_TIDs_) don't capture any meaning about the sen
 On the same context to capture the richness of every single word, we associate them with a higher number of dimensions. These dimensions are nothing but randomly initialized numbers, which will be determined by Language Model. The more the LM learn these features/richness well. The better. 
 
 Once we know how to represent a tokens richly, we end up with something called as a Token Embedding Matrix (_TEM_). It stores embeddings for all the tokens in a vocabulary/dataset. These embeddings are revised via the language model during the training process, to capture the essence of the word. 
-> The dimensions is vocab_size x num_embedding_dims. For our examples we use embedding dimension as `786`
+> The dimensions is vocab_size x num_embedding_dims. For our examples we use embedding dimension as `768`
 
 Token embedding matrix serves as a lookup table, initialized randomly and are trainable params for the model. 
 
@@ -293,123 +287,45 @@ Mathematically _TEM_ + _PEM_ yields a input embedding matrix (_IEM_). This _IEM_
 ---
 
 ### Processing Block
-Detailing the transformer architecture
-
-
-### Output Block
-Detailing the output block of transformer architecture. 
-
-
-# Page 11
-
-**Date: / /**
-
-### Model Architecture.
-### Layer Norm.
-
-- Once we have input embedding lets see the model where all magick happens.
-
-**Input Embeddings**
-$\leftarrow$ 768 $\rightarrow$
-[ ][ ][ ][ ]  One
-[ -||- ]  day
-[ -||- ]  a
-[ : ]  little girl
-
-- **We process the input embeddings through Layer Normalization.**
+#### Norm Layer
+We now process the _IEM_. by passing it via Norm Layer. 
+> IMG: Norm layer transformation image
+- Doing this helps us to: 
     - This helps to stabilize training by stopping gradient explosion.
-    - Used to stabilize backpropagation during training.
-    - Basically backprop depends on gradients which depend on the O/P of prev. layer in N.N.
+    - Used to stabilize back-propagation during training.
+    - Basically back-propagation depends on gradients which depend on the output of prev. layer in N.N.
     - If the O/P are not of uniform scale & fluctuates bet^n large & small values then the gradient can either stagnate or explode.
     - To avoid this unstable training dynamics, we do layer normalization.
     - Also the O/P distr^n from each layer could change so we normalize it by subtracting the mean from I/P & dividing by standard deviation.
     - This shift of distr^n problem is also called **internal Covariant Shift.**
+    - Layer normalization improves training performance.
 
----
+#### Attention Block
+The block where our _SLM_ will actually learn how to produce meaningful short stories with the right form. Before we dive into the implementation part of the attention block, let's see why this is block is necessary in the first place. 
+Eg. `A dog went to catch a ball, it couldn't catch it.`
+- Here first it refers to dog & 2nd one to ball.
+- Now if we want to predict next token for `it ...` such a sentence, should `bark` come after it or `flew`. 
 
-# Page 12
+For us humans this is fairly simple, as we know the context. By context I mean, we know what the it refers to, from the previous sentence. In NLP, this is deriving attention from the history. This deriving of history is the goal of the attention block. Without this block the _SLM_ would never learn how much attention needs to be paid to chunks of tokens before predicting the next token.
 
-**Date: / /**
+Now let's dive into the working of this block itself. 
 
-- Layer normalization improves training performance.
+Attention block is similar to embeddings. We begin with huge set of matrices filled with random numbers & tune these numbers over whole data hoping it will capture the essence i.e. form & meaning of the language.
 
-### Attention Block
+Attention block captures how each token relates/attends to or gives attention to tokens which come before that token. This info is captured by the attention mechanism. The attention mechanism is responsible to convert the _IEM_ into a Context Vector (_CTXVec_). _CTXVec_ will be later also used in output block for loss calculation. 
 
-- This is where the core of magic in LLM lives. This block is the one that captures the form & meaning of language.
+> IMG: Context Vector formation 2 images.
 
-- $\rightarrow$ ! The thing with attention block is similar to embeddings. We begin with huge set of matrices filled with random numbers & tune these numbers over whole data hoping it will capture the essence i.e. form & meaning of the language.
+> IMG: Masked Single Head Self Attention 
 
-- Lets go to the prev. example.
-  The dog chased the ball, it could not catch it.
-  - Here first it refers to dog & 2nd one to ball.
-  - Now if we plan to predict next token for:
-    It $\rightarrow$ how what to write here
+One crucial note to point out is we haven't changed dimensions  of embeddings from the input block, and it stays as is till the until we reach to the very last layer of the output block.
 
----
-
-# Page 13
-
-**Date: / /**
-
-**It barked or It flew...**
-
-- This attention, i.e. how each token relates/attends or gives attention to tokens is decided by the attention block.
-- The relation information is captured by attention block's attention mechanism.
-
-- Basically this mechanism converts the input embedding vector to **context vector**, which will be used for loss calculation.
-
-IMG $\rightarrow$ It (768) - Context Vector
-$\uparrow$
-IMG $\rightarrow$ It (768) - I/P embedding Vector.
-Scales to context vector.
-
-$\alpha_{21} \leftarrow \alpha_{22} \rightarrow \alpha_{23} \rightarrow \alpha_{24} \rightarrow \alpha_{25}$
-**Eg:** The next day is bright.
-$i_1$ $i_2$ $i_3$ $i_4$ $i_5$
-
-next $\Rightarrow$ $i^1_2 = \alpha_{21} \times i_1 + \alpha_{22} \times i_2 + \alpha_{23} \times i_3 + \alpha_{24} \times i_4 + \alpha_{25} \times i_5$
-
-$\alpha_{ij}$ = attention scores.
-$i_n$ = I/P embeddings.
-
-$i^1_2$ is the context vector.
-
----
-
-# Page 14
-
-- This attention block is where words start to understand each others form & meaning.
-- Without this block LLM doesn't work.
-
-**Girl** $\rightarrow$ [ 1 ][ 1 ][ 1 ][ 1 ] $\rightarrow$ **Single Masked Multi-Head Self Attention**
-$\leftarrow$ 768 $\rightarrow$
-(I/P embedding)
-
-$\downarrow$
-
-[ ][ ][ ][ ] Context Vector
-$\leftarrow$ 768 $\rightarrow$
-
-- Embedding size doesn't change for tokens until we reach to the very last O/P layer.
-- The way we go from I/P vectors to context vectors is by making use of **Queries, Key & Value matrices weight Matrices.**
+Mathematically, way we go from I/P vectors to context vectors is by making use of **Queries, Key & Value matrices weight Matrices.**
 
 - Briefly we take I/P vector embeddings. (4 * 768)
-    - Then we multiply them with Weight query matrix i.e. $W_Q$ of dim (768 * 768) & get a Query Matrix of dim (4 * 768)
-    - Similarly we multiply I/P by Key Weight Matrix & get Key matrix of dim (4 * 768).
-    - Lastly likewise we have value matrix.
-
----
-
-# Page 15
-
-**Date: / /**
-
-$i_1 \xrightarrow{W_Q (768 * 768)} Q (4 * 768)$
-$i_2 \xrightarrow{W_K} K (4 * 768)$
-$i_3 \xrightarrow{W_V} V (4 * 768)$
-$i_4$
-
-$\rightarrow Q * K^T (4 * 4)$ (Attention Scores)
+    - Then we multiply them with `query weight matrix` i.e. $W_q$ of dim (768 * 768) & get a `query matrix` of dim (4 * 768)
+    - Similarly we multiply input vector embeddings by `key weight matrix` i.e. $W_k$ & get `key matrix` of dim (4 * 768).
+    - Lastly likewise we have `value matrix` by multiplying input vector embeddings via a `value weight matrix` i.e. $W_v$
 
 - Here $W_Q, W_K$ & $W_V$ weight matrices are trainable.
 - Once we have attention scores they are normalized by $sqrt(d_{keys})$, then we apply softmax to get Attention weights.
@@ -419,94 +335,66 @@ $\rightarrow Q * K^T (4 * 4)$ (Attention Scores)
     - Basically each token should only know/attend to tokens before it & not after it.
     - So the Attention scores matrix, we need to mask all the scores for tokens that come after a token.
 
-| | One | day | a | little |
-| :--- | :--- | :--- | :--- | :--- |
-| One | / | | | |
-| day | / | / | | |
-| a | / | / | / | |
-| little | / | / | / | / |
-
-**IMG: Causal attention scores.**
-**Masked to ensure causality in attention block. So every token only sees attention scores of tokens that come before it.**
+> IMG: Causal attention scores.
 
 - This avoids model peeking into future for next token prediction.
-
----
-
-# Page 16
-
-**Why Softmax ?? Why Cross-Entropy Loss?**
-**In general any MLE name??**
-**Date: / /**
-
 - So we know now why **causal & masked** is a word for the block name. Also the word **self** is used because each token attends to other tokens in its **own sentence**.
 - Add of small N.N block after attention head.
-- **Code Snip.**
+
+> Code Snip: Of the causal attention and so on.
 
 - Regarding masking process, we simply set values above diagonal to $-inf$, so when we take softmax they go to 0.
 - The attention scores are divided by $sqrt$ of Key dims to keep the variance occurring in $Q * K^T$'s dot product should stay as low as possible.
 - Then we fill elements above diagonal are replaced with $-\infty$.
 - Then we take softmax of $Q * K^T$.
-    $\rightarrow$ This masks token future tokens wrt a token.
-    $\rightarrow$ Ensures the sum of prob. for tokens to be predicted is 1.
+    - This masks token future tokens wrt a token.
+    - Ensures the sum of prob. for tokens to be predicted is 1.
 - After these operations we can quantitatively estimate how much attention a token has to pay to tokens prev. tokens.
-
----
-
-# Page 17
 
 - The trainable matrices are added in hope the math does the magic & learns the form & essence of language.
 
-### Dropout Block.
+#### Dropout Block.
 
 - We add a dropout block to remove the lazy neuron problem from the N.N. & improve generalization performance.
 
-### Shortcut Connection alternate.
+#### Shortcut Connection alternate.
 
 - It is added to give another path to flow the gradients & prevent the vanishing gradient problem, when multiple layers are chained together.
 - It just means I/P before all the layers occurring before shortcut connection is added to to the O/P produced just before by last layer before shortcut connection.
 - In our case O/P of dropout is added to I/P before layer norm 1.
   Likewise I/P before layer norm 2 is added to O/P produced by 2nd dropout at the end of transformer block.
 
-### Feed Forward N.N.
+#### Feed Forward N.N.
 
 - After shortcut connection 1, we again normalize the vectors.
 - Then we have input for feed forward N.N.
 
----
-
-# Page 18
-
-**Size of F.F. N.N.**
-- The feed forward N.N. is again a deep learny thing, basically we project the dimension to higher dimension space & hope that it captures the problem & solves it.
+> IMG: FF NN. 
+- The feed forward N.N. is again a deep learning thing, basically we project the dimension to higher dimension space & hope that it captures the problem & solves it.
 - In our dummy example.
   the I/P dim to Feed forward N.N are 4 * 768 $\xrightarrow{768 * 3072}$ 4 * 3072 dims $\rightarrow$ 4 * 768.
   (4 * 768 $\rightarrow$ 3072 dims)
 
-    - This is expansion compression N.N. which retains the size of I/P but captures richer meaning, more non-linearities.
+    - This is expansion compression N.N. which retains the size of I/P but captures richer meaning, more non-linearity's.
 
 - It turns out that this layer is crucial in transformer block & without this llm fails to capture context patterns in underlying data, & cannot answer queries that well.
 - This block shifts performance to new levels.
 
-* The act^n function for this is **GeLU**.
+* The activation function for this is **GeLU**.
     - It is diff. before 0.
     - Its +ve but not y=x for +ve inputs.
     - Generally gives good results.
 
 ---
 
-# Page 19
-
-**What are logits actually??**
-**Date: / /**
-
 - After this we again do dropout for stability.
-- **Code Snip.**
+> Code Snip
 
-** Now that's the end of 1 transformer block. We put such n transformer block chain sequentially & finally get an I/P logits of the O/P.
-    - The O/P has the same dim as the I/P.
+Now that's the end of 1 transformer block. We put such n transformer block chain sequentially & finally get logits matrix as an output from the transformer block. These logits still has the same dim as the i.e. 768.
 
-### Output block of Model.
+
+### Output Block
+Detailing the output block of transformer architecture. 
 
 One [ ][ ][ ][ ] $\leftarrow$ 768 $\rightarrow$
 day
