@@ -99,8 +99,13 @@ def get_batch(split):
         data = np.memmap('train.bin', dtype=np.uint16, mode='r')
     else:
         data = np.memmap('validation.bin', dtype=np.uint16, mode='r')
+
+    # TODO
+    # create the input and target batches by slicing the data at the random indices
     ix = torch.randint(len(data) - block_size, (batch_size,))
+
     x = torch.stack([torch.from_numpy((data[i:i+block_size]).astype(np.int64)) for i in ix])
+
     y = torch.stack([torch.from_numpy((data[i+1:i+1+block_size]).astype(np.int64)) for i in ix])
     if device_type == 'cuda':
         # pin arrays x,y, which allows us to move them to GPU asynchronously (non_blocking=True)

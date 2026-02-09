@@ -10,8 +10,7 @@ Before we dive into the details of architecture, what is a small model actually?
 
 However the amount of params a SLM should have to call it small is a bit blurry. For the purpose of this blog, we’ll define an SLM as any model with fewer than 1B parameters. While the industry standard for "small" is shifting as hardware improves, 1B is a perfect entry point for understanding the architecture.
 
-- The trend in SLMs is more about Data Quality and Algorithmic Efficiency, somewhat similar to Moore's law. It’s worth noting that we are getting better at "distilling" knowledge into smaller brains, not just waiting for faster chips. 
-- 
+- The trend in SLMs is more about Data Quality and Algorithmic Efficiency, somewhat similar to Moore's law. It’s worth noting that we are getting better at "distilling" knowledge into smaller brains, not just waiting for faster chips.
 - Hopefully with a better future, this LLM space also follows the same law with hardware and software optimizations and one day we can even run a GPT-10 on an Android Phone, without any API call to the internet ;)
 
 - The goal of this blog is to gain an understanding of LLMs architecture.
@@ -30,8 +29,7 @@ However the amount of params a SLM should have to call it small is a bit blurry.
 1. Dataset
 2. Assembling the Model Architecture
 3. Setting up the SLM training.
-4. Pre-training the SLM
-5. Running Inference.
+4. Running Inference.
 
 ---
 
@@ -300,6 +298,15 @@ To fix this, we "stamp" each token with a positional vector:
 - The token "cat" gets a vector that says "I mean 'cat' AND I am the 2nd word."
 - This allows the Attention mechanism to understand not just what a word is, but where it is relative to others.
 
+> The critical point here, is we use the same positional vector matrix for the whole training.
+
+- Think of the context window as a bus with 128 seats.
+  - We add a specific vector (PEM-0) to whatever word sits in Seat #0.
+  - We add a different vector (PEM-1) to Seat #1.
+  - This injects structural information into the word. The model learns that "Start of sentence" + "The" implies a subject is coming next.
+
+Note: While we use simple addition here, modern models (like Llama 3) use RoPE (Rotary Positional Embeddings), which rotates the vector in space to capture relative distances even better.
+
 ---
 
 ### Processing Block
@@ -461,12 +468,11 @@ The loss calculation Steps look something as follows:
 | One day | little | a (TID = 15) |
 | One day a | girl | little (TID = 24) |
 
-Now as the goal is to predict the next token correctly, from the final probability matrix, we consider the probabilities of the correct ground truth i.e. we collect only the probability at the _TIDs_, same as the ground truth i.e. $p_{11}, p_{15}, p_{24}$ and calculate cross entropy loss with these.
+Now as the goal is to predict the next token correctly, from the final probability matrix, we consider the probabilities of the correct ground truth i.e. we collect only the probability at the _TIDs_, same as the ground truth i.e. $p_{11}, p_{15}, p_{24}$ and calculate categorical cross entropy loss with these.
 So for the above example the loss is:
     $-\frac {1}{4} (log(p_{11}) + log(p_{15}) + log(p_{24}))$
-  
 
-### Full Training Loop
+## Setting up the SLM training
 
 Now that we understand the blocks, how do they actually learn? We don't just pass one sentence through; we pass millions, over and over again.
 
@@ -490,10 +496,9 @@ graph TD
     style Forward fill:#FFBF00,stroke:#000000,stroke-width:2px,color:#000000
     style Optim fill:#FFBF00,stroke:#000000,stroke-width:2px,color:#000000
 ```
-
 You might notice the "Optimizer Step" in the chart. We usually use an optimizer called AdamW. Without getting into the math, think of AdamW as a GPS for the model's weights. It tells the parameters exactly which direction to move and how fast to move to reduce the loss (error) most efficiently.
 
-### Running Inference
+## Running Inference
 
 Once our loss is low and the model is trained, how do we actually use it to write a story? This process is called Inference.
 
@@ -525,3 +530,55 @@ In the next part, we will see which components of an Auto Regressive Model, shou
 We will define these step for text based diffusion models and the component changes in ARM required to achieve this.
 
 Until then Sankyu for reading and will be glad to receive your feedback on your thought process about Auto Regressive Models.
+
+## Extra Rabbit Hole Discussions
+
+### **The Math behind the Magic: Why Softmax and Cross-Entropy?**
+
+- In our output block we convert our logits into probabilities using **Softmax** and calculate error using **Cross-Entropy**. Why these specific functions though?
+  - 1.**Why `exp()` in Softmax?**
+    - **No Negatives:** The output of a neural network can be negative (e.g., -5). $e^{-5}$ is a small positive number ($0.006$). Probabilities must be positive!
+    - **Winner Takes All:** Exponentials exaggerate differences. If "cat" scores slightly higher than "dog" in raw numbers, the exponential function widens that gap, making the model more decisive.
+  
+  - 2.**Why Cross-Entropy?**
+    - It measures "Surprise." If the model predicts "Dog" with 99% confidence but the answer is "Cat," the surprise (loss) is massive.
+
+  - 3.**The Calculus Trick:**
+    - The most beautiful reason is the math. When you combine the natural log ($\ln$) from Cross-Entropy with the exponent ($e^x$) from Softmax, their derivatives cancel out perfectly ($P - Y$). This removes messy constants from the gradient calculation, keeping the training fast and numerically stable.
+
+### **From Tokens to Parallel Loss: The "Magic Trick"**
+
+- I used to think the model reads "One," predicts "day," adds it to the list, and then reads "One day." That is how we *generate* text (Inference), but that is too slow for *training*.
+
+In training, we use a magic trick called **Teacher Forcing** with Parallelism. We don't loop; we process everything at once using giant matrices. Here is the 6-step flow:
+
+- 1. **Batching:** We stack 32 sentences of length 128 into a matrix `[32, 128]`.
+- 2. **Embedding:** We convert these IDs to vectors `[32, 128, 768]`. "One" and "day" remain separate vectors; we **do not** combine them into a single "One day" token.
+- 3. **Positional Encoding:** We stamp each vector with its location (Seat #0, Seat #1).
+- 4. **Forward Pass:** The Transformer processes all 4,096 tokens (32 * 128) simultaneously.
+- 5. **Masking:** The Attention block uses a triangular mask to ensure Token #5 cannot "see" Token #6, even though they are processed at the same time.
+- 6. **Parallel Loss:** We calculate the loss for all 4,096 predictions instantly and **average them over the entire batch**.
+- This approach allows the GPU to crush the computation in a single step without waiting for loops.
+
+Code Snippet: The Batch Loss Calculation
+
+```python
+ # Inside the model's forward pass
+ if targets is not None:
+     # flatten the batch (32) and sequence (128) dimensions together
+     # logits.view(-1, ...) -> shape becomes [4096, vocab_size]
+     logits = logits.view(-1, logits.size(-1))
+     targets = targets.view(-1)
+     
+     # Calculate cross_entropy for all 4096 tokens at once and return the average
+     loss = F.cross_entropy(logits, targets)
+```
+
+## Resources
+
+- [What is a VLM?](https://www.vizuaranewsletter.com/p/what-exactly-is-a-vlm-vision-language)
+- [Journey of a Single Token](https://www.vizuaranewsletter.com/p/the-journey-of-a-single-token)
+
+## Closing Note
+
+The post aims to be both beginner friendly and more than anyone for me to help me catchup in the space of LLMs, putting pen to paper and jotting my understanding. So feedback is always needed for self-improvement in the process ;). Thank you for reading.
